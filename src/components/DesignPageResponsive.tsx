@@ -317,177 +317,198 @@ const designVignettes: DesignVignette[] = [
   }
 ];
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const iconMap: { [key: string]: any } = {
+  Music, ScanFace, Route, Coffee, DollarSign, Sofa, Calendar, Eye, PackageOpen, Video,
+  Moon, Monitor, Heart, Trophy, Users, Tag, BookOpen, Phone, Star, Bell,
+  Camera, MessageSquare, Zap, User, GraduationCap, HeartPulse, Smartphone, UserMinus, Lightbulb,
+  Glasses, Utensils, Brain, Footprints, Sparkles, Dna, Smile, Send, TrendingUp, Clock,
+  Scale, Cloud, Gift, Briefcase, FileCheck, Shield, BarChart, HeartOff, CheckSquare, Thermometer
+};
+
 export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiveProps) {
   const [selectedDesign, setSelectedDesign] = useState<DesignVignette | null>(designVignettes[0]);
+
+  const navigate = (dir: 1 | -1) => {
+    const idx = designVignettes.findIndex(d => d.id === selectedDesign?.id);
+    setSelectedDesign(designVignettes[(idx + dir + designVignettes.length) % designVignettes.length]);
+  };
+
+  const Icon = selectedDesign?.icon ? iconMap[selectedDesign.icon] : null;
+
   return (
-    <div className="bg-[#f1efed] min-h-screen w-full overflow-x-hidden">
-      {/* Main container with responsive padding */}
-      <div className="relative w-full">
-        {/* Header Section */}
-        <header className="bg-[#0f1012] px-4 sm:px-8 md:px-16 py-6 sm:py-8 relative overflow-hidden">
-          <div className="max-w-7xl mx-auto relative z-10">
-            {/* Navigation with decorative line and triangle */}
-            <div className="flex flex-col items-end mb-8 sm:mb-12">
-              <nav className="flex justify-end gap-4 sm:gap-6">
-                <button
-                  onClick={() => onNavigate('designs')}
-                  className="font-['Anton:Regular',sans-serif] text-[#f1efed] text-base sm:text-lg md:text-xl hover:opacity-80 transition-opacity"
-                >
-                  DESIGNS/
-                </button>
-                <button
-                  onClick={() => onNavigate('about')}
-                  className="font-['Anton:Regular',sans-serif] text-[#cfcfcf] text-base sm:text-lg md:text-xl hover:text-[#f1efed] transition-colors"
-                >
-                  ABOUT/
-                </button>
-              </nav>
-              {/* Decorative horizontal line under nav */}
-              <div className="w-48 sm:w-56 h-0.5 bg-[#f1efed] opacity-10 mt-2" />
-              {/* Decorative triangle facing inward */}
-              <div className="w-0 h-0 border-l-[192px] sm:border-l-[224px] border-l-transparent border-t-[192px] sm:border-t-[224px] border-t-[#f1efed] opacity-5" />
+    <div className="w-full overflow-x-hidden">
+
+      {/* ═══ HEADER (dark background) ═══ */}
+      <header className="bg-[#0f1012] text-[#f1efed]">
+
+        {/* Top section: logo (left) + nav + tagline (right) */}
+        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between">
+
+          {/* LEFT: Logo block with border (Figma Rectangle 4) */}
+          <div className="flex items-end flex-shrink-0">
+            {/* Bordered container holding the Security wordmark */}
+            <div
+              className="border border-[#f1efed] flex flex-col justify-end px-4 pt-5 pb-6 sm:px-6 lg:pl-[101px] lg:pr-8 lg:pt-[74px] lg:pb-8 self-stretch"
+            >
+              <svg
+                className="w-20 sm:w-24 lg:w-[97px] h-auto"
+                fill="none"
+                viewBox="0 0 97.0622 26.5134"
+              >
+                <path d={svgPaths.p1567f280} fill="#F1EFED" />
+                <path d={svgPaths.p2f943800} fill="#F1EFED" />
+                <path d={svgPaths.p857c700} fill="#F1EFED" />
+                <path d={svgPaths.p8cbaa80} fill="#F1EFED" />
+                <path d={svgPaths.p30bf6cc0} fill="#F1EFED" />
+                <path d={svgPaths.p14adf900} fill="#F1EFED" />
+                <path d={svgPaths.p3c5f4500} fill="#F1EFED" />
+                <path d={svgPaths.p38a85680} fill="#F1EFED" />
+              </svg>
             </div>
 
-            {/* Logo Section - Security Noir. */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-end gap-2 sm:gap-4 mb-8 sm:mb-12">
-              {/* Security text with triangle below */}
-              <div className="flex flex-col items-start">
-                <svg className="w-16 sm:w-20 md:w-24 h-auto" fill="none" preserveAspectRatio="xMinYMin meet" viewBox="0 0 97.0622 26.5134">
-                  <g>
-                    <path d={svgPaths.p1567f280} fill="#F1EFED" />
-                    <path d={svgPaths.p2f943800} fill="#F1EFED" />
-                    <path d={svgPaths.p857c700} fill="#F1EFED" />
-                    <path d={svgPaths.p8cbaa80} fill="#F1EFED" />
-                    <path d={svgPaths.p30bf6cc0} fill="#F1EFED" />
-                    <path d={svgPaths.p14adf900} fill="#F1EFED" />
-                    <path d={svgPaths.p3c5f4500} fill="#F1EFED" />
-                    <path d={svgPaths.p38a85680} fill="#F1EFED" />
-                  </g>
-                </svg>
-                {/* Decorative triangle under Security */}
-                <div className="w-0 h-0 border-l-[28px] sm:border-l-[36px] md:border-l-[42px] border-l-[#f1efed]/20 border-t-[28px] sm:border-t-[36px] md:border-t-[42px] border-t-transparent mt-2" />
-              </div>
-
-              {/* Noir large letters with period */}
-              <div className="flex items-end gap-0.5 sm:gap-1">
-                <svg className="h-16 sm:h-20 md:h-24 w-auto" fill="none" preserveAspectRatio="xMinYMin meet" viewBox="0 0 45.8477 92.6943">
-                  <path d={svgPaths.p18a72800} fill="#F1EFED" />
-                </svg>
-                <svg className="h-16 sm:h-20 md:h-24 w-auto" fill="none" preserveAspectRatio="xMinYMin meet" viewBox="0 0 46 94">
-                  <path d={svgPaths.p34a54771} fill="#F1EFED" />
-                </svg>
-                <svg className="h-16 sm:h-20 md:h-24 w-auto" fill="none" preserveAspectRatio="xMinYMin meet" viewBox="0 0 18.0657 93.5167">
-                  <path d={svgPaths.p8082e80} fill="#F1EFED" />
-                </svg>
-                <svg className="h-16 sm:h-20 md:h-24 w-auto" fill="none" preserveAspectRatio="xMinYMin meet" viewBox="0 0 45.6957 93.5167">
-                  <path d={svgPaths.p27865e00} fill="#F1EFED" />
-                </svg>
-                <span className="font-['Anton:Regular',sans-serif] text-[#f1efed] text-3xl sm:text-4xl md:text-5xl leading-none self-end translate-y-[0.2em]">.</span>
-              </div>
+            {/* NOIR. letters – outside the bordered box */}
+            <div className="flex items-end gap-0.5 pb-6 lg:pb-8">
+              <svg className="h-16 sm:h-20 lg:h-[93px] w-auto" fill="none" viewBox="0 0 45.8477 92.6943">
+                <path d={svgPaths.p18a72800} fill="#F1EFED" />
+              </svg>
+              <svg className="h-16 sm:h-20 lg:h-[94px] w-auto" fill="none" viewBox="0 0 46 94">
+                <path d={svgPaths.p34a54771} fill="#F1EFED" />
+              </svg>
+              <svg className="h-16 sm:h-20 lg:h-[93.5px] w-auto" fill="none" viewBox="0 0 18.0657 93.5167">
+                <path d={svgPaths.p8082e80} fill="#F1EFED" />
+              </svg>
+              <svg className="h-16 sm:h-20 lg:h-[93.5px] w-auto" fill="none" viewBox="0 0 45.6957 93.5167">
+                <path d={svgPaths.p27865e00} fill="#F1EFED" />
+              </svg>
+              <span
+                style={{ fontFamily: "'Anton', sans-serif" }}
+                className="text-4xl sm:text-5xl lg:text-6xl text-[#f1efed] leading-none self-end pb-1"
+              >.</span>
             </div>
+          </div>
 
-            {/* Tagline */}
-            <p className="font-['Inter:Medium_Italic',sans-serif] italic text-[#f1efed] text-sm sm:text-base leading-relaxed max-w-md">
-              A collection of critical designs and short stories that use imaginary but plausible 
-              technologies to expose real security and privacy risks through satire, humor, and absurdity.
+          {/* RIGHT: Nav + Tagline */}
+          <div className="flex flex-col items-start lg:items-end px-4 sm:px-6 lg:px-0 pt-4 lg:pt-5 lg:pr-[150px] gap-3 lg:gap-4">
+            <nav className="flex gap-5 sm:gap-6">
+              <button
+                onClick={() => onNavigate('designs')}
+                style={{ fontFamily: "'Anton', sans-serif" }}
+                className="text-[#f1efed] text-lg sm:text-xl hover:opacity-80 transition-opacity"
+              >
+                DESIGNS/
+              </button>
+              <button
+                onClick={() => onNavigate('about')}
+                style={{ fontFamily: "'Anton', sans-serif" }}
+                className="text-[#cfcfcf] text-lg sm:text-xl hover:text-[#f1efed] transition-colors"
+              >
+                ABOUT/
+              </button>
+            </nav>
+            <p
+              style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}
+              className="italic text-[#f1efed] text-base leading-[22px] max-w-sm lg:max-w-[375px] lg:text-right"
+            >
+              A collection of critical designs and short stories that use imaginary but plausible technologies to expose real security and privacy risks through satire, humor, and absurdity.
             </p>
-
-            {/* Divider */}
-            <div className="border-t border-[#f1efed] my-6 sm:my-8" />
-
-            {/* Title */}
-            <h1 className="font-['Anton:Regular',sans-serif] text-[#f1efed] text-2xl sm:text-3xl md:text-4xl mb-4">
-              Critical Design Vignettes
-            </h1>
-
-            {/* Subtitle line */}
-            <div className="border-t border-[#f1efed] w-64 sm:w-80" />
-
-            {/* Design Vignettes List */}
-            <div className="mt-8 columns-2 sm:columns-3 lg:columns-4 xl:columns-5 gap-x-6 text-[#f1efed] text-[11px] font-['Inter:Light',sans-serif] leading-tight">
-              {designVignettes.map((design) => (
-                <button
-                  key={design.id}
-                  onClick={() => setSelectedDesign(design)}
-                  className={`block w-full text-left mb-3 h-[30px] transition-all hover:underline ${
-                    selectedDesign?.id === design.id
-                      ? 'font-["Inter:Bold",sans-serif] font-bold'
-                      : ''
-                  }`}
-                >
-                  {design.title}
-                </button>
-              ))}
-            </div>
           </div>
-        </header>
+        </div>
 
-        {/* Content Section */}
-        <main className="bg-[#f1efed] px-4 sm:px-8 md:px-16 py-8 sm:py-12 md:py-16">
-          <div className="max-w-4xl mx-auto">
-            {selectedDesign && (
-              <article className="space-y-4 sm:space-y-6">
-                <h2 className="font-['Anton:Regular',sans-serif] text-xl sm:text-2xl text-black">
-                  {selectedDesign.title}
-                </h2>
-                
-                <div className="font-['Inria_Serif:Regular',sans-serif] text-base sm:text-lg leading-7 text-black space-y-4">
-                  <p>{selectedDesign.content}</p>
-                </div>
+        {/* Heading + story list area */}
+        <div className="px-4 sm:px-6 lg:px-[199px] mt-6">
+          {/* Full-width divider (Line 1) */}
+          <div className="border-t border-[#f1efed]" />
 
-                {/* Image or Icon */}
-                <div className="mt-6 sm:mt-8 flex justify-center">
-                  {selectedDesign.image ? (
-                    <img 
-                      alt={`${selectedDesign.title} illustration`}
-                      className="w-full max-w-xs mx-auto sm:max-w-sm object-contain mix-blend-multiply" 
-                      src={selectedDesign.image} 
-                    />
-                  ) : selectedDesign.icon && (() => {
-                    const iconMap: { [key: string]: any } = {
-                      Music, ScanFace, Route, Coffee, DollarSign, Sofa, Calendar, Eye, PackageOpen, Video,
-                      Moon, Monitor, Heart, Trophy, Users, Tag, BookOpen, Phone, Star, Bell,
-                      Camera, MessageSquare, Zap, User, GraduationCap, HeartPulse, Smartphone, UserMinus, Lightbulb,
-                      Glasses, Utensils, Brain, Footprints, Sparkles, Dna, Smile, Send, TrendingUp, Clock,
-                      Scale, Cloud, Gift, Briefcase, FileCheck, Shield, BarChart, HeartOff, CheckSquare, Thermometer
-                    };
-                    const IconComponent = iconMap[selectedDesign.icon];
-                    return IconComponent ? <IconComponent className="w-32 h-32 sm:w-40 sm:h-40 text-black/20" strokeWidth={1} /> : null;
-                  })()}
-                </div>
+          {/* "Critical Design Vignettes" heading */}
+          <h1
+            style={{ fontFamily: "'Anton', sans-serif" }}
+            className="text-[#f1efed] text-3xl sm:text-4xl lg:text-[38px] leading-tight mt-4"
+          >
+            Critical Design Vignettes
+          </h1>
 
-                {/* Navigation buttons */}
-                <div className="flex justify-center gap-4 pt-6 sm:pt-8">
-                  <button 
-                    onClick={() => {
-                      const currentIndex = designVignettes.findIndex(d => d.id === selectedDesign.id);
-                      const prevIndex = currentIndex > 0 ? currentIndex - 1 : designVignettes.length - 1;
-                      setSelectedDesign(designVignettes[prevIndex]);
-                    }}
-                    className="p-3 hover:bg-black/5 rounded-lg transition-colors"
-                    aria-label="Previous design"
-                  >
-                    <svg className="w-10 h-10 sm:w-12 sm:h-12" fill="none" viewBox="0 0 48 48">
-                      <path d="M30 36L18 24L30 12" stroke="#1E1E1E" strokeLinecap="round" strokeLinejoin="round" strokeWidth="4" />
-                    </svg>
-                  </button>
-                  <button 
-                    onClick={() => {
-                      const currentIndex = designVignettes.findIndex(d => d.id === selectedDesign.id);
-                      const nextIndex = currentIndex < designVignettes.length - 1 ? currentIndex + 1 : 0;
-                      setSelectedDesign(designVignettes[nextIndex]);
-                    }}
-                    className="p-3 hover:bg-black/5 rounded-lg transition-colors"
-                    aria-label="Next design"
-                  >
-                    <svg className="w-10 h-10 sm:w-12 sm:h-12" fill="none" viewBox="0 0 48 48">
-                      <path d="M18 36L30 24L18 12" stroke="#1E1E1E" strokeLinecap="round" strokeLinejoin="round" strokeWidth="4" />
-                    </svg>
-                  </button>
-                </div>
-              </article>
-            )}
+          {/* Shorter divider (Line 2) */}
+          <div className="border-t border-[#f1efed] mt-3 w-64 sm:w-80 lg:w-[376px]" />
+
+          {/* Story list: 5 columns on large screens */}
+          <div
+            className="mt-6 pb-8 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-x-4 gap-y-1"
+            style={{ fontFamily: "'Inter', sans-serif" }}
+          >
+            {designVignettes.map((design) => (
+              <button
+                key={design.id}
+                onClick={() => setSelectedDesign(design)}
+                className={`text-left text-base leading-[22px] text-[#f1efed] hover:underline transition-all py-0.5 ${
+                  selectedDesign?.id === design.id ? 'font-bold' : 'font-light'
+                }`}
+              >
+                {design.title}
+              </button>
+            ))}
           </div>
+        </div>
+      </header>
+
+      {/* ═══ CONTENT SECTION ═══ */}
+      <div className="flex items-stretch min-h-[500px]">
+
+        {/* Dark left panel — creates the diagonal visual from Figma (hidden on mobile) */}
+        <div className="hidden md:block bg-[#0f1012] flex-shrink-0 w-[22%] lg:w-[27.5%]" />
+
+        {/* Off-white story area */}
+        <main className="flex-1 bg-[#f1efed]">
+
+          {/* Chevrons at top-right of content panel */}
+          <div className="flex justify-end gap-1 pt-6 pr-4 sm:pr-8">
+            <button
+              onClick={() => navigate(-1)}
+              className="w-12 h-12 flex items-center justify-center hover:bg-black/5 rounded-lg transition-colors"
+              aria-label="Previous design"
+            >
+              <svg className="w-8 h-8" fill="none" viewBox="0 0 48 48">
+                <path d="M30 36L18 24L30 12" stroke="#1E1E1E" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" />
+              </svg>
+            </button>
+            <button
+              onClick={() => navigate(1)}
+              className="w-12 h-12 flex items-center justify-center hover:bg-black/5 rounded-lg transition-colors"
+              aria-label="Next design"
+            >
+              <svg className="w-8 h-8" fill="none" viewBox="0 0 48 48">
+                <path d="M18 36L30 24L18 12" stroke="#1E1E1E" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" />
+              </svg>
+            </button>
+          </div>
+
+          {/* Story content */}
+          {selectedDesign && (
+            <article className="px-4 sm:px-8 lg:px-10 pt-4 pb-16">
+              <h2
+                style={{ fontFamily: "'Anton', sans-serif" }}
+                className="text-black text-2xl sm:text-3xl mb-4"
+              >
+                {selectedDesign.title}
+              </h2>
+              <p
+                style={{ fontFamily: "'Inria Serif', serif" }}
+                className="text-black text-base sm:text-lg leading-[25px]"
+              >
+                {selectedDesign.content}
+              </p>
+
+              {/* Icon illustration */}
+              {Icon && (
+                <div className="mt-10 flex justify-end pr-4">
+                  <Icon
+                    className="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 text-black/20"
+                    strokeWidth={1}
+                  />
+                </div>
+              )}
+            </article>
+          )}
         </main>
       </div>
     </div>
