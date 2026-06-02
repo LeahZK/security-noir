@@ -349,21 +349,21 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
           <div className="flex items-end flex-shrink-0">
             {/* Bordered container holding the Security wordmark */}
             <div
-              className="border border-[#f1efed] flex flex-col justify-end px-4 pt-5 pb-6 sm:px-6 lg:pl-[101px] lg:pr-8 lg:pt-[74px] lg:pb-8 self-stretch"
+              className="border border-black bg-[#f1efed] flex flex-col justify-end px-4 pt-5 pb-6 sm:px-6 lg:pl-[101px] lg:pr-8 lg:pt-[74px] lg:pb-8 self-stretch"
             >
               <svg
                 className="w-20 sm:w-24 lg:w-[97px] h-auto"
                 fill="none"
                 viewBox="0 0 97.0622 26.5134"
               >
-                <path d={svgPaths.p1567f280} fill="#F1EFED" />
-                <path d={svgPaths.p2f943800} fill="#F1EFED" />
-                <path d={svgPaths.p857c700} fill="#F1EFED" />
-                <path d={svgPaths.p8cbaa80} fill="#F1EFED" />
-                <path d={svgPaths.p30bf6cc0} fill="#F1EFED" />
-                <path d={svgPaths.p14adf900} fill="#F1EFED" />
-                <path d={svgPaths.p3c5f4500} fill="#F1EFED" />
-                <path d={svgPaths.p38a85680} fill="#F1EFED" />
+                <path d={svgPaths.p1567f280} fill="#0F1012" />
+                <path d={svgPaths.p2f943800} fill="#0F1012" />
+                <path d={svgPaths.p857c700} fill="#0F1012" />
+                <path d={svgPaths.p8cbaa80} fill="#0F1012" />
+                <path d={svgPaths.p30bf6cc0} fill="#0F1012" />
+                <path d={svgPaths.p14adf900} fill="#0F1012" />
+                <path d={svgPaths.p3c5f4500} fill="#0F1012" />
+                <path d={svgPaths.p38a85680} fill="#0F1012" />
               </svg>
             </div>
 
@@ -452,16 +452,22 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
       </header>
 
       {/* ═══ CONTENT SECTION ═══ */}
-      <div className="flex items-stretch min-h-[500px]">
+      {/* Ivory background with black triangle in lower-left (Figma Rectangle 5) */}
+      <div className="relative bg-[#0f1012] min-h-[500px]">
 
-        {/* Dark left panel — creates the diagonal visual from Figma (hidden on mobile) */}
-        <div className="hidden md:block bg-[#0f1012] flex-shrink-0 w-[22%] lg:w-[27.5%]" />
+        {/* Mobile: full ivory background */}
+        <div className="absolute inset-0 bg-[#f1efed] lg:hidden" />
 
-        {/* Off-white story area */}
-        <main className="flex-1 bg-[#f1efed]">
+        {/* Desktop: ivory pentagon — triangle cut from upper-left, strip cut from right */}
+        <div
+          className="hidden lg:block absolute inset-0 bg-[#f1efed]"
+          style={{ clipPath: 'polygon(27.5% 0%, 85.4% 0%, 85.4% 100%, 0% 100%, 0% 76%)' }}
+        />
+
+        <main className="relative">
 
           {/* Chevrons at top-right of content panel */}
-          <div className="flex justify-end gap-1 pt-6 pr-4 sm:pr-8">
+          <div className="flex justify-end gap-1 pt-6 pr-4 sm:pr-8 lg:pr-[16%]">
             <button
               onClick={() => navigate(-1)}
               className="w-12 h-12 flex items-center justify-center hover:bg-black/5 rounded-lg transition-colors"
@@ -484,7 +490,7 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
 
           {/* Story content */}
           {selectedDesign && (
-            <article className="px-4 sm:px-8 lg:px-10 pt-4 pb-16">
+            <article className="px-4 sm:px-8 lg:pl-[30%] lg:pr-[16%] pt-4 pb-16">
               <h2
                 style={{ fontFamily: "'Anton', sans-serif" }}
                 className="text-black text-2xl sm:text-3xl mb-4"
