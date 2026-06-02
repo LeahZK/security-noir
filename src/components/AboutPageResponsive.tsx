@@ -18,7 +18,7 @@ export default function AboutPageResponsive({ onNavigate }: AboutPageResponsiveP
           <div className="flex items-end flex-shrink-0">
             {/* Bordered container holding the Security wordmark */}
             <div
-              className="border border-black bg-[#f1efed] flex flex-col justify-end px-4 pt-5 pb-6 sm:px-6 lg:pl-[101px] lg:pr-8 lg:pt-[74px] lg:pb-8 self-stretch"
+              className="border border-black bg-[#f1efed] flex flex-col px-4 pt-5 pb-4 sm:px-6 lg:pl-[101px] lg:pr-8 lg:pt-[74px] lg:pb-0 self-stretch lg:[clip-path:polygon(0%_0%,100%_0%,0%_100%)]"
             >
               <svg
                 className="w-20 sm:w-24 lg:w-[97px] h-auto"
@@ -119,19 +119,19 @@ export default function AboutPageResponsive({ onNavigate }: AboutPageResponsiveP
       </header>
 
       {/* ═══ CONTENT SECTION ═══ */}
-      {/* Ivory background with black triangle in lower-left (Figma Rectangle 5) */}
-      <div className="relative bg-[#0f1012] min-h-[500px]">
+      {/* Ivory base; dark triangle and right strip overlaid at fixed size on desktop */}
+      <div className="relative bg-[#f1efed]">
 
-        {/* Mobile: full ivory background */}
-        <div className="absolute inset-0 bg-[#f1efed] lg:hidden" />
+        {/* Dark right margin strip */}
+        <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-[14.6%] bg-[#0f1012]" />
 
-        {/* Desktop: ivory pentagon — triangle cut from upper-left, strip cut from right */}
+        {/* Dark triangle — fixed height so it never shifts */}
         <div
-          className="hidden lg:block absolute inset-0 bg-[#f1efed]"
-          style={{ clipPath: 'polygon(27.5% 0%, 85.4% 0%, 85.4% 100%, 0% 100%, 0% 76%)' }}
+          className="hidden lg:block absolute left-0 top-0 bg-[#0f1012] pointer-events-none"
+          style={{ width: '27.5%', height: '880px', clipPath: 'polygon(0 0, 100% 0, 0 100%)' }}
         />
 
-        <main className="relative px-4 sm:px-8 lg:pl-[30%] lg:pr-[16%] py-12 sm:py-16">
+        <main className="relative px-4 sm:px-8 lg:pl-[29%] lg:pr-[25%] py-12 sm:py-16">
           {/* Three Lorem Ipsum sections */}
           <article className="mb-12">
             <h2
