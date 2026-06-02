@@ -349,7 +349,7 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
           <div className="flex items-end flex-shrink-0">
             {/* Bordered container holding the Security wordmark */}
             <div
-              className="border border-black bg-[#f1efed] flex flex-col justify-end px-4 pt-5 pb-6 sm:px-6 lg:pl-[101px] lg:pr-8 lg:pt-[74px] lg:pb-8 self-stretch"
+              className="border border-black bg-[#f1efed] flex flex-col px-4 pt-5 pb-4 sm:px-6 lg:pl-[101px] lg:pr-8 lg:pt-[74px] lg:pb-0 self-stretch lg:[clip-path:polygon(0%_0%,100%_0%,0%_100%)]"
             >
               <svg
                 className="w-20 sm:w-24 lg:w-[97px] h-auto"
@@ -452,28 +452,28 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
       </header>
 
       {/* ═══ CONTENT SECTION ═══ */}
-      {/* Ivory background with black triangle in lower-left (Figma Rectangle 5) */}
-      <div className="relative bg-[#0f1012] min-h-[500px]">
+      {/* Ivory base; dark triangle and right strip overlaid at fixed size on desktop */}
+      <div className="relative bg-[#f1efed]">
 
-        {/* Mobile: full ivory background */}
-        <div className="absolute inset-0 bg-[#f1efed] lg:hidden" />
+        {/* Dark right margin strip — always visible on desktop */}
+        <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-[14.6%] bg-[#0f1012]" />
 
-        {/* Desktop: ivory pentagon — triangle cut from upper-left, strip cut from right */}
+        {/* Dark triangle — fixed 880px height so it never moves when story changes */}
         <div
-          className="hidden lg:block absolute inset-0 bg-[#f1efed]"
-          style={{ clipPath: 'polygon(27.5% 0%, 85.4% 0%, 85.4% 100%, 0% 100%, 0% 76%)' }}
+          className="hidden lg:block absolute left-0 top-0 bg-[#0f1012] pointer-events-none"
+          style={{ width: '27.5%', height: '880px', clipPath: 'polygon(0 0, 100% 0, 0 100%)' }}
         />
 
         <main className="relative">
 
-          {/* Chevrons at top-right of content panel */}
-          <div className="flex justify-end gap-1 pt-6 pr-4 sm:pr-8 lg:pr-[16%]">
+          {/* Chevrons — match Figma size (48 × 48 visible icon) */}
+          <div className="flex justify-end gap-1 pt-6 pr-4 sm:pr-8 lg:pr-[25%]">
             <button
               onClick={() => navigate(-1)}
               className="w-12 h-12 flex items-center justify-center hover:bg-black/5 rounded-lg transition-colors"
               aria-label="Previous design"
             >
-              <svg className="w-8 h-8" fill="none" viewBox="0 0 48 48">
+              <svg className="w-12 h-12" fill="none" viewBox="0 0 48 48">
                 <path d="M30 36L18 24L30 12" stroke="#1E1E1E" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" />
               </svg>
             </button>
@@ -482,7 +482,7 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
               className="w-12 h-12 flex items-center justify-center hover:bg-black/5 rounded-lg transition-colors"
               aria-label="Next design"
             >
-              <svg className="w-8 h-8" fill="none" viewBox="0 0 48 48">
+              <svg className="w-12 h-12" fill="none" viewBox="0 0 48 48">
                 <path d="M18 36L30 24L18 12" stroke="#1E1E1E" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" />
               </svg>
             </button>
@@ -490,7 +490,7 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
 
           {/* Story content */}
           {selectedDesign && (
-            <article className="px-4 sm:px-8 lg:pl-[30%] lg:pr-[16%] pt-4 pb-16">
+            <article className="px-4 sm:px-8 lg:pl-[29%] lg:pr-[25%] pt-4 pb-16">
               <h2
                 style={{ fontFamily: "'Anton', sans-serif" }}
                 className="text-black text-2xl sm:text-3xl mb-4"
@@ -504,11 +504,11 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
                 {selectedDesign.content}
               </p>
 
-              {/* Icon illustration */}
+              {/* Icon — positioned to match Figma (lower-right of content area) */}
               {Icon && (
-                <div className="mt-10 flex justify-end pr-4">
+                <div className="mt-10 flex justify-end">
                   <Icon
-                    className="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 text-black/20"
+                    className="w-36 h-36 sm:w-44 sm:h-44 lg:w-[248px] lg:h-[248px] text-black/20"
                     strokeWidth={1}
                   />
                 </div>
