@@ -542,18 +542,19 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
               </p>
 
               {/* Icon — positioned to match Figma (lower-right of content area) */}
-              {Icon && (
-                <div className="mt-10 flex justify-end">
-                  <Icon
-                    className="w-36 h-36 sm:w-44 sm:h-44 lg:w-[248px] lg:h-[248px] text-black/20"
-                    strokeWidth={1}
-                  />
-                </div>
-              )}
-            </article>
-          )}
-        </main>
-      </div>
-    </div>
-  );
-}
+              {selectedDesign.image ? (
+  <div className="mt-10 flex justify-end">
+    <img
+      src={selectedDesign.image}
+      alt={selectedDesign.title}
+      className="w-36 sm:w-44 lg:w-[248px] opacity-80"
+    />
+  </div>
+) : Icon ? (
+  <div className="mt-10 flex justify-end">
+    <Icon
+      className="w-36 h-36 sm:w-44 sm:h-44 lg:w-[248px] lg:h-[248px] text-black/20"
+      strokeWidth={1}
+    />
+  </div>
+) : null}
