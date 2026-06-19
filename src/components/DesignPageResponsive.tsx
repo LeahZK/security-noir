@@ -304,7 +304,7 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
   };
 
   return (
-    <div className="w-full overflow-x-hidden">
+    <div className="w-full overflow-x-hidden bg-[#0f1012]">
 
       {/* ═══ HEADER (dark background) ═══ */}
       <header className="bg-[#0f1012] text-[#f1efed]">
@@ -420,7 +420,7 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
 
       {/* ═══ CONTENT SECTION ═══ */}
       {/* Ivory base; dark triangle and right strip overlaid at fixed size on desktop */}
-      <div className="relative bg-[#f1efed]">
+      <div className="relative bg-[#f1efed] min-h-screen">
 
         {/* Dark right margin strip — always visible on desktop */}
         <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-[14.6%] bg-[#0f1012]" />
@@ -477,7 +477,8 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
                   <img
                     src={selectedDesign.image}
                     alt={selectedDesign.title}
-                    className="w-36 sm:w-44 lg:w-[248px] opacity-80"
+                    className="w-56 sm:w-72 lg:w-[380px]"
+                    style={{ mixBlendMode: 'multiply' }}
                   />
                 </div>
               )}
