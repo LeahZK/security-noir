@@ -24,7 +24,8 @@ const designVignettes: DesignVignette[] = [
   {
     id: 2,
     title: "Post-human will",
-    content: "Alice sits with an estate planner drafting what her lawyer calls a post-human will. Do you consent to sharing your complete biological signature for future immunity therapies? Are clones (human, digital, postbiological) OK? In parallel timelines where you outlive yourself in this timeline, do you consent to synchronize your memories and experiences with your alternate selves? Can reconstructed versions of you be summoned for future courts, tribunals, or truth commissions? Do you authorize future revenues generated from your likeness to sustain autonomous post-human agents that advocate for your interests? Alice tries to answer each question carefully but finds the exercise tedious and unsettling, ultimately deciding to let her relatives decide.",
+    content: "...",
+    image: "/illustrations/website_illustrations_Posthuman will.png",
     icon: "FileCheck"
   },
   {
@@ -85,12 +86,14 @@ const designVignettes: DesignVignette[] = [
     id: 12,
     title: "Green Advantage",
     content: "Green Advantage believes companies can build healthier, more sustainable workplaces by encouraging responsible commuting choices. To support this, the platform connects to employees' transit cards, bikeshare accounts, and deploys license plate readers in the company's parking lot. Alice, who lives near the office, consistently earns top CommuteScores by biking to work and is gifted a Patagonia rain jacket. Bob pressures his partner to handle school drop-offs so he can take public transit and maintain a high CommuteScore, leading to increasing tension at home. Carol feels the system is unfair because she can only afford to live far from the office, where housing is cheaper, and public transit options do not exist. David starts parking across the street in a nearby shopping center, smug that his \"last mile\" walk still counts.",
+    image: "/illustrations/website_illustrations_Green Advantage.png",
     icon: "Footprints"
   },
   {
     id: 13,
     title: "Second Thought",
     content: "A data-deletion tool that introduces a mandatory \"cooling-off\" period. When users press \"Delete,\" a timer begins—but the countdown adapts based on inferred emotional state, typing rhythm, or eye-tracking data. If the system senses impulsivity, the wait is extended—sometimes indefinitely. \"For your own clarity,\" the screen assures. It's legal. It's protective. And in most cases, the timer outlasts the decision.",
+    image: "/illustrations/website_illustrations_Second Thought.png",
     icon: "Clock"
   },
   {
@@ -181,6 +184,7 @@ const designVignettes: DesignVignette[] = [
     id: 28,
     title: "You've Always Got Mail",
     content: "People still check their mailboxes, hoping for a sign that someone thought of them. That moment of anticipation rarely delivers anymore. You've Always Got Mail was created to bring that feeling back. When no real mail arrives, the box fabricates an elaborate piece of mail, with content inspired by the user's linked online profile. Alice finds a glossy political campaign flyer, printed on heavy satin stock—then another, from the same candidate, with completely opposite promises. Bob receives a strange handwritten letter, in his own handwriting, from \"his future self,\" imploring him to short Bitcoin before Q3. Carol receives a note from her car, gently suggesting retirement before winter due to joint pain. David is delighted by a voucher for one free year—until he notices it asks for a scanned copy of his ID and concludes a scammer slipped it into his mailbox.",
+    image: "/illustrations/website_illustrations_You\u2019ve Always Got Mail.png",
     icon: "Send"
   },
   {
@@ -241,6 +245,7 @@ const designVignettes: DesignVignette[] = [
     id: 38,
     title: "Second Thought",
     content: "Second Thought is a plugin that records every click, tap, and swipe during your browsing session. At the start of each day, it prompts you with a list: \"10 things you might want to undo from yesterday.\" Alice reopens six cookie banners where she had clicked the default \"Accept All\" button without reading the options. Bob revokes location access for an app he used once on vacation. Carol is shown a fine-print clause she agreed to while signing up for a recipe site—granting the company perpetual rights to use her uploaded photos in marketing campaigns. David, meanwhile, stops thinking twice. He clicks through everything, knowing Second Thought will fix it later.",
+    image: "/illustrations/website_illustrations_Second Thought.png",
     icon: "CheckSquare"
   },
   {
@@ -289,6 +294,7 @@ const designVignettes: DesignVignette[] = [
     id: 46,
     title: "BloodKey",
     content: "BloodKey is a form of two-factor authentication that can protect online accounts from stolen passwords. With BloodKey, after providing their password, users authenticate with a pin-prick blood test using an inexpensive biomedical Bluetooth gadget. BloodKey was quickly adopted by leading websites because it was very hard to fake, despite its invasive nature. However, Alice grew tired of the daily inconvenience of pricking her finger, so she gradually stopped logging into her social media accounts altogether, while Bob's medical condition prevented him from using it at all. A media frenzy ensued when the most popular free-to-play online game sold users' genomic data to pharmaceutical companies, boosting its revenue streams.",
+    image: "/illustrations/website_illustrations_Blood Key.png",
     icon: "HeartPulse"
   },
   {
