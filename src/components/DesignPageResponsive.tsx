@@ -22,11 +22,12 @@ const designVignettes: DesignVignette[] = [
     id: 2,
     title: "Post-human will",
     content: "Alice sits with an estate planner drafting what her lawyer calls a post-human will. Do you consent to sharing your complete biological signature for future immunity therapies? Are clones (human, digital, postbiological) OK? In parallel timelines where you outlive yourself in this timeline, do you consent to synchronize your memories and experiences with your alternate selves? Can reconstructed versions of you be summoned for future courts, tribunals, or truth commissions? Do you authorize future revenues generated from your likeness to sustain autonomous post-human agents that advocate for your interests? Alice tries to answer each question carefully but finds the exercise tedious and unsettling, ultimately deciding to let her relatives decide.",
-    image: "illustrations/website_illustrations_Posthuman%20will.png"
+    image: "illustrations/Posthuman%20will.png"
   },
   {
     id: 3,
     title: "Contact Crystals™",
+    image: "illustrations/Contact%20Crystlas.png",
     content: "Contact Crystals™ – Wear Your Responsibility! Introducing Contact Crystals™, the elegant accessory that keeps you stylish and safe. Each crystal starts crystal-clear and subtly darkens with every human you come close to. Light violet? You're cautious. Deep black? Well... someone's been mingling. No batteries, no apps—just pure social accountability, worn on your wrist, earlobe, or heart. In uncertain times, transparency is everything. New! Pet and infant editions available now. Contact Crystals™: Because safety never goes out of style."
   },
   {
@@ -37,11 +38,13 @@ const designVignettes: DesignVignette[] = [
   {
     id: 5,
     title: "Silent Shift",
+    image: "illustrations/Silent%20Shift.png",
     content: "Silent Shift is a digital assistant designed to simplify online tasks for elderly users by gradually customizing their interface—removing options they rarely use, hiding buttons they've clicked by mistake, and automating decisions to help them. Over time, their digital environment becomes quieter, smoother, and narrower. Eventually, they begin to forget how to reach certain features they once used, and their family finds the system strangely unfamiliar."
   },
   {
     id: 6,
     title: "BackThen™",
+    image: "illustrations/Back%20then.png",
     content: "People grow. But online, their words don't. BackThen™ is a sincerity-scoring service that evaluates old user-generated content such as tweets, blog posts, and forum rants, assigning a score from 0 to 100 based on how earnestly the author likely meant it at the time. The score accounts for age, tone, platform norms, and whether the sentiment was repeated or retracted. When Alice's teenage forum tirade resurfaces during a job application, the post is flagged with a low sincerity score of 19: \"high irony, age 15, no repeat behavior.\" The recruiter doesn't mention it. Bob isn't so lucky — a college-era blog post denying climate change earns a score of 84, and opponents use it against him during his political campaign. Carol's parents, eager to strengthen her Ivy League applications, hire a sincerity agent to scrub her archive. Earnest blog posts are quietly deleted, while her timeline is repopulated with ironic memes and surrealist jokes. The practice is known as sincerity laundering."
   },
   {
@@ -73,13 +76,13 @@ const designVignettes: DesignVignette[] = [
     id: 12,
     title: "Green Advantage",
     content: "Green Advantage believes companies can build healthier, more sustainable workplaces by encouraging responsible commuting choices. To support this, the platform connects to employees' transit cards, bikeshare accounts, and deploys license plate readers in the company's parking lot. Alice, who lives near the office, consistently earns top CommuteScores by biking to work and is gifted a Patagonia rain jacket. Bob pressures his partner to handle school drop-offs so he can take public transit and maintain a high CommuteScore, leading to increasing tension at home. Carol feels the system is unfair because she can only afford to live far from the office, where housing is cheaper, and public transit options do not exist. David starts parking across the street in a nearby shopping center, smug that his \"last mile\" walk still counts.",
-    image: "illustrations/website_illustrations_Green%20Advantage.png"
+    image: "illustrations/Green%20Advantage.png"
   },
   {
     id: 13,
     title: "Second Thought",
     content: "A data-deletion tool that introduces a mandatory \"cooling-off\" period. When users press \"Delete,\" a timer begins—but the countdown adapts based on inferred emotional state, typing rhythm, or eye-tracking data. If the system senses impulsivity, the wait is extended—sometimes indefinitely. \"For your own clarity,\" the screen assures. It's legal. It's protective. And in most cases, the timer outlasts the decision.",
-    image: "illustrations/website_illustrations_Second%20Thought.png"
+    image: "illustrations/Second%20Thought.png"
   },
   {
     id: 14,
@@ -89,6 +92,7 @@ const designVignettes: DesignVignette[] = [
   {
     id: 15,
     title: "Near Ones",
+    image: "illustrations/Near%20ones.png",
     content: "At first, it was just a nice update. A new feature on the feed—\"relational smoothing,\" they called it. It gently adjusted profile photos, captions, and comments. Subtle tweaks. People looked softer. Posts felt easier to read, more like how I remembered people sounding in real life. Time passed quickly. I'd get lost in the feed for hours without noticing. It felt less like scrolling and more like catching up. One day I stopped on a picture of a woman holding a mug. She had that kind smile I used to get from my high school art teacher, but she wasn't her. Now, when I talk to actual people—on calls, in person—they feel harsher. Less curated. My feed gets me. But lately, I've started wondering: are these people even real? And if they're not, why do they feel more mine than the real ones ever did?"
   },
   {
@@ -99,6 +103,7 @@ const designVignettes: DesignVignette[] = [
   {
     id: 17,
     title: "MyLifeSpan",
+    image: "illustrations/My%20Lifespan.png",
     content: "The MyLifeSpan™ system uses your lifelong digital health records to predict the exact date of your death. The system combines biometric data, genetic markers, behavioural patterns, and even your social media activity to forecast your remaining years. Initially introduced as a way to encourage healthier lifestyles and reduce national healthcare costs, the system quickly integrates into everyday decision-making; job applications, insurance premiums, and even dating apps begin to filter candidates based on \"Remaining Life Score,\" though only the individual can see the exact date of passing. Soon, people resort to hacking their online health identities, masking their scores or falsifying them entirely."
   },
   {
@@ -144,6 +149,7 @@ const designVignettes: DesignVignette[] = [
   {
     id: 26,
     title: "ThrivePass System",
+    image: "illustrations/Destination%20Perks.png",
     content: "Fitness culture rewards pushing through pain, even when it harms us. ThrivePass redefines access by using a wearable that tracks your physical and emotional readiness—and only unlocks gym doors and equipment when you are truly prepared to train. Alice arrives at the gym feeling determined after a tough day, but her keycard is rejected because her wearable reported poor sleep. Bob, just beginning to feel like himself again after a concussion, finds the doors won't unlock until he uploads a doctor's note. Carol's treadmill blocks her usual shows, replacing them with calming videos ThrivePass says are better for her mood. David is locked out after ThrivePass detects he trained near another member whose wearable began flagging signs of a contagious viral infection."
   },
   {
@@ -154,11 +160,13 @@ const designVignettes: DesignVignette[] = [
   {
     id: 28,
     title: "You've Always Got Mail",
+    image: "illustrations/YouΓÇÖve%20Always%20Got%20Mail.png",
     content: "People still check their mailboxes, hoping for a sign that someone thought of them. That moment of anticipation rarely delivers anymore. You've Always Got Mail was created to bring that feeling back. When no real mail arrives, the box fabricates an elaborate piece of mail, with content inspired by the user's linked online profile. Alice finds a glossy political campaign flyer, printed on heavy satin stock—then another, from the same candidate, with completely opposite promises. Bob receives a strange handwritten letter, in his own handwriting, from \"his future self,\" imploring him to short Bitcoin before Q3. Carol receives a note from her car, gently suggesting retirement before winter due to joint pain. David is delighted by a voucher for one free year—until he notices it asks for a scanned copy of his ID and concludes a scammer slipped it into his mailbox."
   },
   {
     id: 29,
     title: "GeneKey",
+    image: "illustrations/Verified%20Lienage.png",
     content: "What if your access to life's key opportunities—jobs, loans, school programs, cities, relationships, even parenting—was pre-approved or denied based on your genome? When the letter came, it was smaller than expected. Pale gray envelope, textured like old receipts. Inside: three careers—Logistics Drone Operator, Nutritional Compliance Advisor, and Residential Companion (Tier B). \"Companion sounds nice, right? Like I'd be good with people.\" My sister snorted. \"You'd be good at following instructions.\" That night, I searched the forbidden terms: override protocol, gene wash, analog application. Most of the links were dead or satire. One led to a blurry photo of someone burning their GeneKey bracelet in a public fountain. The caption read: Reject your predicted self."
   },
   {
@@ -204,8 +212,7 @@ const designVignettes: DesignVignette[] = [
   {
     id: 38,
     title: "Second Thought",
-    content: "Second Thought is a plugin that records every click, tap, and swipe during your browsing session. At the start of each day, it prompts you with a list: \"10 things you might want to undo from yesterday.\" Alice reopens six cookie banners where she had clicked the default \"Accept All\" button without reading the options. Bob revokes location access for an app he used once on vacation. Carol is shown a fine-print clause she agreed to while signing up for a recipe site—granting the company perpetual rights to use her uploaded photos in marketing campaigns. David, meanwhile, stops thinking twice. He clicks through everything, knowing Second Thought will fix it later.",
-    image: "illustrations/website_illustrations_Second%20Thought.png"
+    content: "Second Thought is a plugin that records every click, tap, and swipe during your browsing session. At the start of each day, it prompts you with a list: \"10 things you might want to undo from yesterday.\" Alice reopens six cookie banners where she had clicked the default \"Accept All\" button without reading the options. Bob revokes location access for an app he used once on vacation. Carol is shown a fine-print clause she agreed to while signing up for a recipe site—granting the company perpetual rights to use her uploaded photos in marketing campaigns. David, meanwhile, stops thinking twice. He clicks through everything, knowing Second Thought will fix it later."
   },
   {
     id: 39,
@@ -246,7 +253,7 @@ const designVignettes: DesignVignette[] = [
     id: 46,
     title: "BloodKey",
     content: "BloodKey is a form of two-factor authentication that can protect online accounts from stolen passwords. With BloodKey, after providing their password, users authenticate with a pin-prick blood test using an inexpensive biomedical Bluetooth gadget. BloodKey was quickly adopted by leading websites because it was very hard to fake, despite its invasive nature. However, Alice grew tired of the daily inconvenience of pricking her finger, so she gradually stopped logging into her social media accounts altogether, while Bob's medical condition prevented him from using it at all. A media frenzy ensued when the most popular free-to-play online game sold users' genomic data to pharmaceutical companies, boosting its revenue streams.",
-    image: "illustrations/website_illustrations_Blood%20Key.png"
+    image: "illustrations/Blood%20Key.png"
   },
   {
     id: 47,
@@ -291,6 +298,7 @@ const designVignettes: DesignVignette[] = [
   {
     id: 55,
     title: "ToS Fishing",
+    image: "illustrations/The%20Feed%20That%20Fished%20Me.png",
     content: "ToS Fishing is a digital game where players earn points by hunting down excessive legalese on websites, including terms of service (ToS), privacy policies, and cookie policies. To play, users simply copy and paste the URL of the legalese. If the ToS has been seen before, users are awarded points based on its word count. If it has not been seen before, it is reviewed by a human for validity and word count—and in this case, the user gets a finder's bonus. Users display their aggregate score on a leaderboard with a profile showing their top catches, and can earn various badges for playing consistently."
   }
 ];
