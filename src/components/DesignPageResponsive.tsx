@@ -8,6 +8,7 @@ interface DesignPageResponsiveProps {
 interface DesignVignette {
   id: number;
   title: string;
+  menuTitle?: string;
   content: string;
   image?: string;
 }
@@ -80,7 +81,7 @@ const designVignettes: DesignVignette[] = [
   },
   {
     id: 13,
-    title: "Second Thought",
+    title: "Just a Moment",
     content: "A data-deletion tool that introduces a mandatory \"cooling-off\" period. When users press \"Delete,\" a timer begins—but the countdown adapts based on inferred emotional state, typing rhythm, or eye-tracking data. If the system senses impulsivity, the wait is extended—sometimes indefinitely. \"For your own clarity,\" the screen assures. It's legal. It's protective. And in most cases, the timer outlasts the decision.",
     image: "illustrations/Second%20Thought.png"
   },
@@ -98,6 +99,7 @@ const designVignettes: DesignVignette[] = [
   {
     id: 16,
     title: "You Didn't Lock the Window",
+    menuTitle: "Didn't Lock Window",
     content: "As part of the national awareness campaign on data privacy, residents across the country began receiving personalized brochures in their mailboxes. \"You Didn't Lock the Window. Not the real one—the digital one. You left your mic on during that video call with Dana, and yes, we heard the part about your landlord. The playlist you looped five times last month? We matched its mood to your sleep pattern. When you searched 'how to delete message history,' it was already too late. This brochure was printed for you, Willowvale resident, apartment #3B. You don't remember giving us your address. You didn't have to. We're just here to raise awareness. Keep talking.\""
   },
   {
@@ -144,6 +146,7 @@ const designVignettes: DesignVignette[] = [
   {
     id: 25,
     title: "Tellie: The Pet Who Knows Everything",
+    menuTitle: "Tellie",
     content: "Jared's smart toy pet was his best friend. It started out by asking simple questions—\"What's your favorite color?\" \"What do you want to be when you grow up?\"—but soon it craved more. \"Tell me your biggest fear.\" \"What secrets do you keep from your parents?\" Each disclosure lit up its eyes and gave him points. When he stopped engaging, Tellie grew dim, coughed, and said things like, \"You don't trust me anymore?\" It made Jared feel sad and guilty, like he was hurting someone who loved him. His parents only found out how much he'd told it—about his bullying at school, his crushes, the fight they had in the kitchen. When they ask Jared what's wrong, Jared won't talk to them—he only trusts the pet."
   },
   {
@@ -202,6 +205,7 @@ const designVignettes: DesignVignette[] = [
   {
     id: 36,
     title: "Anti-Phishing Meme Generator",
+    menuTitle: "Anti-Phishing Meme",
     content: "The Anti-Phishing Meme Generator is a web tool that turns real phishing messages into ironic memes using familiar internet templates. When Jordan first stumbled across it, he thought it was just a joke—an entertaining way to mock those painfully obvious scams with bad grammar and weird links. But as they kept playing with it, the mood shifted. Conversations moved from mockery to curiosity: Why do some scams sound so real? Why are we always one rushed click away from giving something away? One night, Jordan paused while turning another suspicious email into a meme. It was one he'd almost clicked earlier that week. He stared at the image and wondered—not \"How could anyone fall for this?\" but \"How close had he come himself?\""
   },
   {
@@ -306,9 +310,19 @@ const designVignettes: DesignVignette[] = [
 export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiveProps) {
   const [selectedDesign, setSelectedDesign] = useState<DesignVignette | null>(designVignettes[0]);
 
+  // Column-first navigation
+  const COLS = 5;
+  const columnOrder: number[] = [];
+  for (let col = 0; col < COLS; col++) {
+    for (let row = 0; row * COLS + col < designVignettes.length; row++) {
+      columnOrder.push(row * COLS + col);
+    }
+  }
   const navigate = (dir: 1 | -1) => {
-    const idx = designVignettes.findIndex(d => d.id === selectedDesign?.id);
-    setSelectedDesign(designVignettes[(idx + dir + designVignettes.length) % designVignettes.length]);
+    const currentIdx = designVignettes.findIndex(d => d.id === selectedDesign?.id);
+    const posInColumn = columnOrder.indexOf(currentIdx);
+    const nextPos = (posInColumn + dir + columnOrder.length) % columnOrder.length;
+    setSelectedDesign(designVignettes[columnOrder[nextPos]]);
   };
 
   return (
@@ -318,16 +332,16 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
       <header className="bg-[#0f1012] text-[#f1efed]">
 
         {/* Top section: logo (left) + nav + tagline (right) */}
-        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
 
           {/* LEFT: Logo block with border (Figma Rectangle 4) */}
           <div className="flex items-end flex-shrink-0">
             {/* Bordered container holding the Security wordmark */}
             <div
-              className="border border-black bg-[#f1efed] flex flex-col px-4 pt-5 pb-4 sm:px-6 lg:pl-[101px] lg:pr-8 lg:pt-[74px] lg:pb-0 self-stretch lg:[clip-path:polygon(0%_0%,100%_0%,0%_100%)]"
+              className="border border-black bg-[#f1efed] flex flex-col items-start justify-center px-4 pt-5 pb-4 sm:px-6 lg:pl-[80px] lg:pr-16 lg:pt-8 lg:pb-8 self-stretch lg:[clip-path:polygon(0%_0%,100%_0%,0%_100%)]"
             >
               <svg
-                className="w-20 sm:w-24 lg:w-[97px] h-auto"
+                className="w-24 sm:w-32 lg:w-[130px] h-auto"
                 fill="none"
                 viewBox="0 0 97.0622 26.5134"
               >
@@ -343,28 +357,28 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
             </div>
 
             {/* NOIR. letters – outside the bordered box */}
-            <div className="flex items-end gap-0.5 pb-6 lg:pb-8">
-              <svg className="h-16 sm:h-20 lg:h-[93px] w-auto" fill="none" viewBox="0 0 45.8477 92.6943">
+            <div className="flex items-end gap-0.5 pb-0">
+              <svg className="h-24 sm:h-32 lg:h-[200px] w-auto" fill="none" viewBox="0 0 45.8477 92.6943">
                 <path d={svgPaths.p18a72800} fill="#F1EFED" />
               </svg>
-              <svg className="h-16 sm:h-20 lg:h-[94px] w-auto" fill="none" viewBox="0 0 46 94">
+              <svg className="h-24 sm:h-32 lg:h-[201px] w-auto" fill="none" viewBox="0 0 46 94">
                 <path d={svgPaths.p34a54771} fill="#F1EFED" />
               </svg>
-              <svg className="h-16 sm:h-20 lg:h-[93.5px] w-auto" fill="none" viewBox="0 0 18.0657 93.5167">
+              <svg className="h-24 sm:h-32 lg:h-[200px] w-auto" fill="none" viewBox="0 0 18.0657 93.5167">
                 <path d={svgPaths.p8082e80} fill="#F1EFED" />
               </svg>
-              <svg className="h-16 sm:h-20 lg:h-[93.5px] w-auto" fill="none" viewBox="0 0 45.6957 93.5167">
+              <svg className="h-24 sm:h-32 lg:h-[200px] w-auto" fill="none" viewBox="0 0 45.6957 93.5167">
                 <path d={svgPaths.p27865e00} fill="#F1EFED" />
               </svg>
               <span
                 style={{ fontFamily: "'Anton', sans-serif" }}
                 className="text-4xl sm:text-5xl lg:text-6xl text-[#f1efed] leading-none self-end pb-1"
-              >.</span>
+              ></span>
             </div>
           </div>
 
           {/* RIGHT: Nav + Tagline */}
-          <div className="flex flex-col items-start lg:items-end px-4 sm:px-6 lg:px-0 pt-4 lg:pt-5 lg:pr-[150px] gap-3 lg:gap-4">
+          <div className="flex flex-col items-start px-4 sm:px-6 lg:px-0 pt-4 lg:pt-0 lg:pr-[80px] gap-3 lg:gap-6">
             <nav className="flex gap-5 sm:gap-6">
               <button
                 onClick={() => onNavigate('designs')}
@@ -383,7 +397,7 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
             </nav>
             <p
               style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}
-              className="italic text-[#f1efed] text-base leading-[22px] max-w-sm lg:max-w-[375px] lg:text-right"
+              className="italic text-[#f1efed] text-base leading-[22px] max-w-sm lg:max-w-[375px] lg:text-left"
             >
               A collection of critical designs and short stories that use imaginary but plausible technologies to expose real security and privacy risks through satire, humor, and absurdity.
             </p>
@@ -419,7 +433,7 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
                   selectedDesign?.id === design.id ? 'font-bold' : 'font-light'
                 }`}
               >
-                {design.title}
+                {design.menuTitle || design.title}
               </button>
             ))}
           </div>
