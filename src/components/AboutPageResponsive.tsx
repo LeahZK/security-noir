@@ -45,7 +45,21 @@ const NOIR_GAP = 7.762;    // tuned so NOIR spans exactly 198 -> 375.7 (Figma)
 
 export default function AboutPageResponsive({ onNavigate }: AboutPageResponsiveProps) {
   return (
-    <div className="w-full overflow-x-hidden bg-[#0f1012]">
+    <div className="relative w-full overflow-x-hidden bg-[#0f1012]">
+
+      {/* Grey triangle — exact Figma shape: 244 x 576.828
+            <path d="M0 576.828V0H244L0 576.828Z" fill="#F1EFED"/>
+          Anchored to the PAGE ROOT, not the header, because it is 576.828px
+          tall and must run past the header's 190px without being clipped. */}
+      <div
+        aria-hidden="true"
+        className="hidden lg:block absolute top-0 left-0 bg-[#f1efed] z-20 pointer-events-none"
+        style={{
+          width: `${runFor(HEADER_WEDGE_H)}px`,
+          height: `${HEADER_WEDGE_H}px`,
+          clipPath: 'polygon(0 0, 100% 0, 0 100%)',
+        }}
+      />
 
       {/* ═══ HEADER (dark background) ═══ */}
       <header className="bg-[#0f1012] text-[#f1efed] relative">
@@ -59,22 +73,9 @@ export default function AboutPageResponsive({ onNavigate }: AboutPageResponsiveP
             className="relative flex-shrink-0 w-full lg:w-auto"
             style={{ height: '190px' }}
           >
-            {/* Grey triangle — exact Figma shape: polygon(0 0, 100% 0, 0 100%).
-                Right angle at top-left; hypotenuse top-right -> bottom-left.
-                Intentionally taller than the header so it continues past it. */}
-            <div
-              aria-hidden="true"
-              className="absolute top-0 left-0 bg-[#f1efed] z-0 pointer-events-none"
-              style={{
-                width: `${runFor(HEADER_WEDGE_H)}px`,
-                height: `${HEADER_WEDGE_H}px`,
-                clipPath: 'polygon(0 0, 100% 0, 0 100%)',
-              }}
-            />
-
             {/* "Security" — sits on the grey side */}
             <svg
-              className="absolute h-auto z-10"
+              className="absolute h-auto z-30"
               style={{ width: `${SEC_W}px`, left: `${SEC_X}px`, top: `${SEC_Y}px` }}
               fill="none"
               viewBox="0 0 97.0622 26.5134"
@@ -91,7 +92,7 @@ export default function AboutPageResponsive({ onNavigate }: AboutPageResponsiveP
 
             {/* NOIR — sits on the dark side, right of the diagonal */}
             <div
-              className="absolute flex items-end z-10"
+              className="absolute flex items-end z-30"
               style={{
                 left: `${NOIR_X}px`,
                 top: `${NOIR_BASELINE - NOIR_H}px`,
