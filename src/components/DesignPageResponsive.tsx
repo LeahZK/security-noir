@@ -307,6 +307,23 @@ const designVignettes: DesignVignette[] = [
   }
 ];
 
+/* ============================================================
+   SHARED DIAGONAL GEOMETRY
+   Both the header wedge and the content wedge derive their
+   diagonal from this ONE angle, so they are guaranteed to be
+   parallel at every screen width.
+   SKEW_DEG = degrees the diagonal leans from vertical.
+   Increase = more slanted. Decrease = more upright.
+   ============================================================ */
+const SKEW_DEG = 20;
+const SKEW_TAN = Math.tan((SKEW_DEG * Math.PI) / 180);
+
+// Horizontal run (px) a diagonal covers over a given height (px)
+const runFor = (heightPx: number) => heightPx * SKEW_TAN;
+
+const HEADER_H = 190;   // header height on desktop (px)
+const CONTENT_H = 880;  // content wedge height (px)
+
 export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiveProps) {
   const [selectedDesign, setSelectedDesign] = useState<DesignVignette | null>(designVignettes[0]);
 
@@ -326,54 +343,65 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
   };
 
   return (
-    <div className="w-full overflow-x-hidden bg-[#0f1012]">
+    <div className="w-full overflow-x-hidden bg-[#f1efed]">
 
       {/* ═══ HEADER (dark background) ═══ */}
       <header className="bg-[#0f1012] text-[#f1efed]">
 
         {/* Top section: logo (left) + nav + tagline (right) */}
-        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
 
-          {/* LEFT: Logo block with border (Figma Rectangle 4) */}
-          <div className="flex items-end flex-shrink-0">
-            {/* Bordered container holding the Security wordmark */}
+          {/* LEFT: grey wedge holding "Security", NOIR sits on the dark side.
+              The wedge's slanted right edge is the divider between the two. */}
+          <div
+            className="relative flex-shrink-0 w-full lg:w-auto"
+            style={{ height: `${HEADER_H}px` }}
+          >
+            {/* Grey wedge. Its right edge runs at exactly SKEW_DEG from vertical,
+                the same angle as the content wedge below. */}
             <div
-              className="border border-black bg-[#f1efed] flex flex-col px-4 pt-5 pb-4 sm:px-6 lg:pl-[101px] lg:pr-8 lg:pt-[74px] lg:pb-0 self-stretch lg:[clip-path:polygon(0%_0%,100%_0%,0%_100%)]"
-            >
-              <svg
-                className="w-20 sm:w-24 lg:w-[97px] h-auto"
-                fill="none"
-                viewBox="0 0 97.0622 26.5134"
-              >
-                <path d={svgPaths.p1567f280} fill="#0F1012" />
-                <path d={svgPaths.p2f943800} fill="#0F1012" />
-                <path d={svgPaths.p857c700} fill="#0F1012" />
-                <path d={svgPaths.p8cbaa80} fill="#0F1012" />
-                <path d={svgPaths.p30bf6cc0} fill="#0F1012" />
-                <path d={svgPaths.p14adf900} fill="#0F1012" />
-                <path d={svgPaths.p3c5f4500} fill="#0F1012" />
-                <path d={svgPaths.p38a85680} fill="#0F1012" />
-              </svg>
-            </div>
+              aria-hidden="true"
+              className="absolute inset-y-0 left-0 bg-[#f1efed]"
+              style={{
+                width: `${260 + runFor(HEADER_H)}px`,
+                clipPath: `polygon(0 0, ${260 + runFor(HEADER_H)}px 0, 260px 100%, 0 100%)`,
+              }}
+            />
 
-            {/* NOIR. letters – outside the bordered box */}
-            <div className="flex items-end gap-0.5 pb-6 lg:pb-8">
-              <svg className="h-16 sm:h-20 lg:h-[93px] w-auto" fill="none" viewBox="0 0 45.8477 92.6943">
+            {/* "Security" — sits on the grey side */}
+            <svg
+              className="absolute w-[110px] lg:w-[130px] h-auto"
+              style={{ left: '78px', top: '52px' }}
+              fill="none"
+              viewBox="0 0 97.0622 26.5134"
+            >
+              <path d={svgPaths.p1567f280} fill="#0F1012" />
+              <path d={svgPaths.p2f943800} fill="#0F1012" />
+              <path d={svgPaths.p857c700} fill="#0F1012" />
+              <path d={svgPaths.p8cbaa80} fill="#0F1012" />
+              <path d={svgPaths.p30bf6cc0} fill="#0F1012" />
+              <path d={svgPaths.p14adf900} fill="#0F1012" />
+              <path d={svgPaths.p3c5f4500} fill="#0F1012" />
+              <path d={svgPaths.p38a85680} fill="#0F1012" />
+            </svg>
+
+            {/* NOIR — sits on the dark side, right of the diagonal */}
+            <div
+              className="absolute flex items-end gap-0.5"
+              style={{ left: '250px', bottom: '18px' }}
+            >
+              <svg className="h-[110px] w-auto" fill="none" viewBox="0 0 45.8477 92.6943">
                 <path d={svgPaths.p18a72800} fill="#F1EFED" />
               </svg>
-              <svg className="h-16 sm:h-20 lg:h-[94px] w-auto" fill="none" viewBox="0 0 46 94">
+              <svg className="h-[111px] w-auto" fill="none" viewBox="0 0 46 94">
                 <path d={svgPaths.p34a54771} fill="#F1EFED" />
               </svg>
-              <svg className="h-16 sm:h-20 lg:h-[93.5px] w-auto" fill="none" viewBox="0 0 18.0657 93.5167">
+              <svg className="h-[110.5px] w-auto" fill="none" viewBox="0 0 18.0657 93.5167">
                 <path d={svgPaths.p8082e80} fill="#F1EFED" />
               </svg>
-              <svg className="h-16 sm:h-20 lg:h-[93.5px] w-auto" fill="none" viewBox="0 0 45.6957 93.5167">
+              <svg className="h-[110.5px] w-auto" fill="none" viewBox="0 0 45.6957 93.5167">
                 <path d={svgPaths.p27865e00} fill="#F1EFED" />
               </svg>
-              <span
-                style={{ fontFamily: "'Anton', sans-serif" }}
-                className="text-4xl sm:text-5xl lg:text-6xl text-[#f1efed] leading-none self-end pb-1"
-              ></span>
             </div>
           </div>
 
@@ -442,7 +470,7 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
 
       {/* ═══ CONTENT SECTION ═══ */}
       {/* Ivory base; dark triangle and right strip overlaid at fixed size on desktop */}
-      <div className="relative bg-[#f1efed] min-h-screen">
+      <div className="relative bg-[#f1efed] min-h-screen flex flex-col">
 
         {/* Dark right margin strip — always visible on desktop */}
         <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-[14.6%] bg-[#0f1012]" />
@@ -450,10 +478,14 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
         {/* Dark triangle — fixed 880px height so it never moves when story changes */}
         <div
           className="hidden lg:block absolute left-0 top-0 bg-[#0f1012] pointer-events-none"
-          style={{ width: '27.5%', height: '880px', clipPath: 'polygon(0 0, 100% 0, 0 100%)' }}
+          style={{
+            width: `${runFor(CONTENT_H)}px`,
+            height: `${CONTENT_H}px`,
+            clipPath: 'polygon(0 0, 100% 0, 0 100%)',
+          }}
         />
 
-        <main className="relative">
+        <main className="relative flex-1">
 
           {/* Chevrons — match Figma size (48 × 48 visible icon) */}
           <div className="flex justify-end gap-1 pt-6 pr-4 sm:pr-8 lg:pr-[25%]">
