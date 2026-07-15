@@ -332,16 +332,16 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
       <header className="bg-[#0f1012] text-[#f1efed]">
 
         {/* Top section: logo (left) + nav + tagline (right) */}
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between">
 
           {/* LEFT: Logo block with border (Figma Rectangle 4) */}
           <div className="flex items-end flex-shrink-0">
             {/* Bordered container holding the Security wordmark */}
             <div
-              className="border border-black bg-[#f1efed] flex flex-col items-start justify-center px-4 pt-5 pb-4 sm:px-6 lg:pl-[80px] lg:pr-16 lg:pt-8 lg:pb-8 self-stretch lg:[clip-path:polygon(0%_0%,100%_0%,0%_100%)]"
+              className="border border-black bg-[#f1efed] flex flex-col px-4 pt-5 pb-4 sm:px-6 lg:pl-[101px] lg:pr-8 lg:pt-[74px] lg:pb-0 self-stretch lg:[clip-path:polygon(0%_0%,100%_0%,0%_100%)]"
             >
               <svg
-                className="w-24 sm:w-32 lg:w-[130px] h-auto"
+                className="w-20 sm:w-24 lg:w-[97px] h-auto"
                 fill="none"
                 viewBox="0 0 97.0622 26.5134"
               >
@@ -357,17 +357,17 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
             </div>
 
             {/* NOIR. letters – outside the bordered box */}
-            <div className="flex items-end gap-0.5 pb-0">
-              <svg className="h-24 sm:h-32 lg:h-[200px] w-auto" fill="none" viewBox="0 0 45.8477 92.6943">
+            <div className="flex items-end gap-0.5 pb-6 lg:pb-8">
+              <svg className="h-16 sm:h-20 lg:h-[93px] w-auto" fill="none" viewBox="0 0 45.8477 92.6943">
                 <path d={svgPaths.p18a72800} fill="#F1EFED" />
               </svg>
-              <svg className="h-24 sm:h-32 lg:h-[201px] w-auto" fill="none" viewBox="0 0 46 94">
+              <svg className="h-16 sm:h-20 lg:h-[94px] w-auto" fill="none" viewBox="0 0 46 94">
                 <path d={svgPaths.p34a54771} fill="#F1EFED" />
               </svg>
-              <svg className="h-24 sm:h-32 lg:h-[200px] w-auto" fill="none" viewBox="0 0 18.0657 93.5167">
+              <svg className="h-16 sm:h-20 lg:h-[93.5px] w-auto" fill="none" viewBox="0 0 18.0657 93.5167">
                 <path d={svgPaths.p8082e80} fill="#F1EFED" />
               </svg>
-              <svg className="h-24 sm:h-32 lg:h-[200px] w-auto" fill="none" viewBox="0 0 45.6957 93.5167">
+              <svg className="h-16 sm:h-20 lg:h-[93.5px] w-auto" fill="none" viewBox="0 0 45.6957 93.5167">
                 <path d={svgPaths.p27865e00} fill="#F1EFED" />
               </svg>
               <span
@@ -378,7 +378,7 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
           </div>
 
           {/* RIGHT: Nav + Tagline */}
-          <div className="flex flex-col items-start px-4 sm:px-6 lg:px-0 pt-4 lg:pt-0 lg:pr-[80px] gap-3 lg:gap-6">
+          <div className="flex flex-col items-start lg:items-end px-4 sm:px-6 lg:px-0 pt-4 lg:pt-5 lg:pr-[150px] gap-3 lg:gap-4">
             <nav className="flex gap-5 sm:gap-6">
               <button
                 onClick={() => onNavigate('designs')}
