@@ -559,7 +559,7 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
                   <img
                     src={selectedDesign.image}
                     alt={selectedDesign.title}
-                    className="w-56 sm:w-72 lg:w-[380px]"
+                    className="w-[268px] sm:w-[346px] lg:w-[456px]"
                     style={{ mixBlendMode: 'multiply' }}
                   />
                 </div>
