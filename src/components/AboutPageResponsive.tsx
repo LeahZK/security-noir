@@ -1,59 +1,115 @@
-import svgPaths from "../imports/svg-60veqkonnh";
+import svgPaths from "../imports/svg-m0bqbyr8st";
 
 interface AboutPageResponsiveProps {
   onNavigate: (page: 'designs' | 'about') => void;
 }
 
+/* ============================================================
+   SHARED DIAGONAL GEOMETRY — taken directly from Figma
+   Figma grey triangle SVG:
+     <path d="M0 576.828V0H244L0 576.828Z" fill="#F1EFED"/>
+   Vertices: (0,0) -> (244,0) -> (0,576.828)
+   A right triangle filling the UPPER-LEFT corner:
+     clip-path: polygon(0 0, 100% 0, 0 100%)
+   Hypotenuse leans 22.929 deg from vertical.
+   Every diagonal derives from WEDGE_RATIO, so all diagonals
+   on the page are parallel by construction.
+   ============================================================ */
+const FIGMA_W = 244;
+const FIGMA_H = 576.828;
+const WEDGE_RATIO = FIGMA_W / FIGMA_H;   // 0.423003 -> 22.929 deg
+
+const runFor = (heightPx: number) => heightPx * WEDGE_RATIO;
+
+const HEADER_WEDGE_H = FIGMA_H;  // grey triangle deliberately spills past the header
+const CONTENT_H = 880;
+
+/* "Security" wordmark — exact Figma layer values
+   size 97.062 x 26.513, position x=101 y=74
+   Its right edge lands 3.4px clear of the diagonal. */
+const SEC_W = 97.062;
+const SEC_X = 101;
+const SEC_Y = 74;
+
+/* NOIR — exact Figma values, taken from the "N" layer:
+   N is 45.848 x 92.694 at x=198, y=74.
+   Security ends at x=198.1 and N begins at x=198, so the two
+   wordmarks are flush and the diagonal passes between them.
+   The diagonal at N's top edge is x=212.7, i.e. it deliberately
+   slices ~14.7px across the N's top-left corner. That overlap is
+   part of the design, so NOIR must NOT be pushed clear of it. */
+const NOIR_X = 198;        // N left edge  (Security ends at 198.1 -> flush)
+const NOIR_BASELINE = 166.7;  // N bottom = 74 + 92.694
+const NOIR_H = 92.694;     // N height
+const NOIR_GAP = 7.762;    // tuned so NOIR spans exactly 198 -> 375.7 (Figma)
+
 export default function AboutPageResponsive({ onNavigate }: AboutPageResponsiveProps) {
   return (
-    <div className="w-full overflow-x-hidden">
+    <div className="w-full overflow-x-hidden bg-[#0f1012]">
 
       {/* ═══ HEADER (dark background) ═══ */}
-      <header className="bg-[#0f1012] text-[#f1efed]">
+      <header className="bg-[#0f1012] text-[#f1efed] relative">
 
         {/* Top section: logo (left) + nav + tagline (right) */}
-        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
 
-          {/* LEFT: Logo block with border (Figma Rectangle 4) */}
-          <div className="flex items-end flex-shrink-0">
-            {/* Bordered container holding the Security wordmark */}
+          {/* LEFT: grey wedge holding "Security", NOIR sits on the dark side.
+              The wedge's slanted right edge is the divider between the two. */}
+          <div
+            className="relative flex-shrink-0 w-full lg:w-auto"
+            style={{ height: '190px' }}
+          >
+            {/* Grey triangle — exact Figma shape: polygon(0 0, 100% 0, 0 100%).
+                Right angle at top-left; hypotenuse top-right -> bottom-left.
+                Intentionally taller than the header so it continues past it. */}
             <div
-              className="border border-black bg-[#f1efed] flex flex-col px-4 pt-5 pb-4 sm:px-6 lg:pl-[101px] lg:pr-8 lg:pt-[74px] lg:pb-0 self-stretch lg:[clip-path:polygon(0%_0%,100%_0%,0%_100%)]"
-            >
-              <svg
-                className="w-20 sm:w-24 lg:w-[97px] h-auto"
-                fill="none"
-                viewBox="0 0 97.0622 26.5134"
-              >
-                <path d={svgPaths.p1567f280} fill="#0F1012" />
-                <path d={svgPaths.p2f943800} fill="#0F1012" />
-                <path d={svgPaths.p857c700} fill="#0F1012" />
-                <path d={svgPaths.p8cbaa80} fill="#0F1012" />
-                <path d={svgPaths.p30bf6cc0} fill="#0F1012" />
-                <path d={svgPaths.p14adf900} fill="#0F1012" />
-                <path d={svgPaths.p3c5f4500} fill="#0F1012" />
-                <path d={svgPaths.p38a85680} fill="#0F1012" />
-              </svg>
-            </div>
+              aria-hidden="true"
+              className="absolute top-0 left-0 bg-[#f1efed] z-0 pointer-events-none"
+              style={{
+                width: `${runFor(HEADER_WEDGE_H)}px`,
+                height: `${HEADER_WEDGE_H}px`,
+                clipPath: 'polygon(0 0, 100% 0, 0 100%)',
+              }}
+            />
 
-            {/* NOIR. letters – outside the bordered box */}
-            <div className="flex items-end gap-0.5 pb-6 lg:pb-8">
-              <svg className="h-16 sm:h-20 lg:h-[93px] w-auto" fill="none" viewBox="0 0 45.8477 92.6943">
+            {/* "Security" — sits on the grey side */}
+            <svg
+              className="absolute h-auto z-10"
+              style={{ width: `${SEC_W}px`, left: `${SEC_X}px`, top: `${SEC_Y}px` }}
+              fill="none"
+              viewBox="0 0 97.0622 26.5134"
+            >
+              <path d={svgPaths.p1567f280} fill="#0F1012" />
+              <path d={svgPaths.p2f943800} fill="#0F1012" />
+              <path d={svgPaths.p857c700} fill="#0F1012" />
+              <path d={svgPaths.p8cbaa80} fill="#0F1012" />
+              <path d={svgPaths.p30bf6cc0} fill="#0F1012" />
+              <path d={svgPaths.p14adf900} fill="#0F1012" />
+              <path d={svgPaths.p3c5f4500} fill="#0F1012" />
+              <path d={svgPaths.p38a85680} fill="#0F1012" />
+            </svg>
+
+            {/* NOIR — sits on the dark side, right of the diagonal */}
+            <div
+              className="absolute flex items-end z-10"
+              style={{
+                left: `${NOIR_X}px`,
+                top: `${NOIR_BASELINE - NOIR_H}px`,
+                gap: `${NOIR_GAP}px`,
+              }}
+            >
+              <svg className="w-auto" style={{ height: `${NOIR_H}px` }} fill="none" viewBox="0 0 45.8477 92.6943">
                 <path d={svgPaths.p18a72800} fill="#F1EFED" />
               </svg>
-              <svg className="h-16 sm:h-20 lg:h-[94px] w-auto" fill="none" viewBox="0 0 46 94">
+              <svg className="w-auto" style={{ height: `${NOIR_H}px` }} fill="none" viewBox="0 0 46 94">
                 <path d={svgPaths.p34a54771} fill="#F1EFED" />
               </svg>
-              <svg className="h-16 sm:h-20 lg:h-[93.5px] w-auto" fill="none" viewBox="0 0 18.0657 93.5167">
+              <svg className="w-auto" style={{ height: `${NOIR_H}px` }} fill="none" viewBox="0 0 18.0657 93.5167">
                 <path d={svgPaths.p8082e80} fill="#F1EFED" />
               </svg>
-              <svg className="h-16 sm:h-20 lg:h-[93.5px] w-auto" fill="none" viewBox="0 0 45.6957 93.5167">
+              <svg className="w-auto" style={{ height: `${NOIR_H}px` }} fill="none" viewBox="0 0 45.6957 93.5167">
                 <path d={svgPaths.p27865e00} fill="#F1EFED" />
               </svg>
-              <span
-                style={{ fontFamily: "'Anton', sans-serif" }}
-                className="text-4xl sm:text-5xl lg:text-6xl text-[#f1efed] leading-none self-end pb-1"
-              >.</span>
             </div>
           </div>
 
@@ -77,121 +133,46 @@ export default function AboutPageResponsive({ onNavigate }: AboutPageResponsiveP
             </nav>
             <p
               style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}
-              className="italic text-[#f1efed] text-base leading-[22px] max-w-sm lg:max-w-[375px] lg:text-right"
+              className="italic text-[#f1efed] text-base leading-[22px] max-w-sm lg:max-w-[375px] lg:text-left"
             >
               A collection of critical designs and short stories that use imaginary but plausible technologies to expose real security and privacy risks through satire, humor, and absurdity.
             </p>
           </div>
         </div>
 
-        {/* About heading + description */}
-        <div className="px-4 sm:px-6 lg:px-[199px] mt-6">
-          {/* Full-width divider (Line 1) */}
-          <div className="border-t border-[#f1efed]" />
-
-          {/* "About" heading */}
-          <h1
-            style={{ fontFamily: "'Anton', sans-serif" }}
-            className="text-[#f1efed] text-3xl sm:text-4xl lg:text-[38px] leading-tight mt-4"
-          >
-            About
-          </h1>
-
-          {/* Shorter divider (Line 2) */}
-          <div className="border-t border-[#f1efed] mt-3 w-20 sm:w-24 lg:w-[92px]" />
-
-          {/* About description – Inter 21px, line-height 36px, with bold spans */}
-          <p
-            style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400 }}
-            className="mt-8 text-[#f1efed] text-base sm:text-lg lg:text-[21px] leading-relaxed lg:leading-[36px] max-w-4xl pb-10"
-          >
-            Security Noir draws on the{" "}
-            <strong style={{ fontWeight: 800 }}>critical design</strong>
-            {" "}movement popularized by Dunne and Raby in the 1990s to imagine{" "}
-            <strong style={{ fontWeight: 800 }}>fictional yet plausible technologies</strong>
-            {" "}that expose{" "}
-            <strong style={{ fontWeight: 800 }}>security and privacy risks</strong>
-            . Each design is presented through{" "}
-            <strong style={{ fontWeight: 700 }}>short narrative vignettes</strong>
-            {" "}that illustrate how these technologies might be experienced in everyday life.
-          </p>
-        </div>
       </header>
 
       {/* ═══ CONTENT SECTION ═══ */}
-      {/* Ivory base; dark triangle and right strip overlaid at fixed size on desktop */}
-      <div className="relative bg-[#f1efed]">
+      <div className="relative bg-[#f1efed] min-h-screen flex flex-col overflow-hidden">
 
         {/* Dark right margin strip */}
         <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-[14.6%] bg-[#0f1012]" />
 
-        {/* Dark triangle — fixed height so it never shifts */}
+        {/* Dark wedge — same angle as the header wedge (WEDGE_RATIO) */}
         <div
           className="hidden lg:block absolute left-0 top-0 bg-[#0f1012] pointer-events-none"
-          style={{ width: '27.5%', height: '880px', clipPath: 'polygon(0 0, 100% 0, 0 100%)' }}
+          style={{
+            width: `${runFor(CONTENT_H)}px`,
+            height: `${CONTENT_H}px`,
+            clipPath: 'polygon(0 0, 100% 0, 0 100%)',
+          }}
         />
 
-        <main className="relative px-4 sm:px-8 lg:pl-[29%] lg:pr-[25%] py-12 sm:py-16">
-          {/* Three Lorem Ipsum sections */}
-          <article className="mb-12">
+        <main className="relative flex-1">
+          <div className="px-4 sm:px-8 lg:pl-[29%] lg:pr-[25%] pt-16 pb-16">
             <h2
               style={{ fontFamily: "'Anton', sans-serif" }}
               className="text-black text-2xl sm:text-3xl mb-4"
             >
-              Lorem Ipsum
+              About
             </h2>
-            <p
-              style={{ fontFamily: "'Inria Serif', serif" }}
-              className="text-black text-base sm:text-lg leading-[25px]"
-            >
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-              incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-              exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-              irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-              pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-              deserunt mollit anim id est laborum.
-            </p>
-          </article>
-
-          <article className="mb-12">
-            <h2
-              style={{ fontFamily: "'Anton', sans-serif" }}
-              className="text-black text-2xl sm:text-3xl mb-4"
-            >
-              Lorem Ipsum
-            </h2>
-            <p
-              style={{ fontFamily: "'Inria Serif', serif" }}
-              className="text-black text-base sm:text-lg leading-[25px]"
-            >
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-              incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-              exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-              irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-              pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-              deserunt mollit anim id est laborum.
-            </p>
-          </article>
-
-          <article className="mb-8">
-            <h2
-              style={{ fontFamily: "'Anton', sans-serif" }}
-              className="text-black text-2xl sm:text-3xl mb-4"
-            >
-              Lorem Ipsum
-            </h2>
-            <p
-              style={{ fontFamily: "'Inria Serif', serif" }}
-              className="text-black text-base sm:text-lg leading-[25px]"
-            >
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-              incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-              exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-              irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-              pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-              deserunt mollit anim id est laborum.
-            </p>
-          </article>
+          <p
+            style={{ fontFamily: "'Inria Serif', serif" }}
+            className="text-black text-base sm:text-lg leading-[25px]"
+          >
+            Anonymized for peer review.
+          </p>
+          </div>
         </main>
       </div>
     </div>
