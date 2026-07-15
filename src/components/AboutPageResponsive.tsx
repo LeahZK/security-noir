@@ -140,15 +140,48 @@ export default function AboutPageResponsive({ onNavigate }: AboutPageResponsiveP
           </div>
         </div>
 
+        {/* Heading + intro area — same structure as the design page */}
+        <div className="px-4 sm:px-6 lg:px-[199px] mt-6">
+          {/* Full-width divider (Line 1) */}
+          <div className="border-t border-[#f1efed]" />
+
+          {/* "About" heading */}
+          <h1
+            style={{ fontFamily: "'Anton', sans-serif" }}
+            className="text-[#f1efed] text-3xl sm:text-4xl lg:text-[38px] leading-tight mt-4"
+          >
+            About
+          </h1>
+
+          {/* Shorter divider (Line 2) */}
+          <div className="border-t border-[#f1efed] mt-3 w-64 sm:w-80 lg:w-[376px]" />
+
+          {/* Intro paragraph — sits on the dark area */}
+          <p
+            style={{ fontFamily: "'Inter', sans-serif" }}
+            className="mt-6 pb-10 text-[#f1efed] text-base leading-[22px] font-light max-w-[820px]"
+          >
+            Security Noir draws on the{' '}
+            <span className="font-bold">critical design</span> movement popularized
+            by Dunne and Raby in the 1990s to imagine{' '}
+            <span className="font-bold">fictional yet plausible technologies</span>{' '}
+            that expose <span className="font-bold">security and privacy risks</span>.
+            Each design is presented through{' '}
+            <span className="font-bold">short narrative vignettes</span> that
+            illustrate how these technologies might be experienced in everyday life.
+          </p>
+        </div>
       </header>
 
       {/* ═══ CONTENT SECTION ═══ */}
+      {/* Identical structure to the design page: ivory base, dark right strip,
+          dark wedge at the shared WEDGE_RATIO angle. */}
       <div className="relative bg-[#f1efed] min-h-screen flex flex-col overflow-hidden">
 
         {/* Dark right margin strip */}
         <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-[14.6%] bg-[#0f1012]" />
 
-        {/* Dark wedge — same angle as the header wedge (WEDGE_RATIO) */}
+        {/* Dark wedge — same angle as the header wedge */}
         <div
           className="hidden lg:block absolute left-0 top-0 bg-[#0f1012] pointer-events-none"
           style={{
@@ -159,19 +192,20 @@ export default function AboutPageResponsive({ onNavigate }: AboutPageResponsiveP
         />
 
         <main className="relative flex-1">
+          {/* Same insets as the design page's story panel */}
           <div className="px-4 sm:px-8 lg:pl-[29%] lg:pr-[25%] pt-16 pb-16">
             <h2
               style={{ fontFamily: "'Anton', sans-serif" }}
               className="text-black text-2xl sm:text-3xl mb-4"
             >
-              About
+              Bio
             </h2>
-          <p
-            style={{ fontFamily: "'Inria Serif', serif" }}
-            className="text-black text-base sm:text-lg leading-[25px]"
-          >
-            Anonymized for peer review.
-          </p>
+            <p
+              style={{ fontFamily: "'Inria Serif', serif" }}
+              className="text-black text-base sm:text-lg leading-[25px]"
+            >
+              Anonymized for peer review.
+            </p>
           </div>
         </main>
       </div>
