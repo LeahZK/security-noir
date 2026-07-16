@@ -308,43 +308,43 @@ const designVignettes: DesignVignette[] = [
 ];
 
 /* ============================================================
-   SHARED DIAGONAL GEOMETRY — taken directly from Figma
-   Figma grey triangle SVG:
+   SHARED DIAGONAL GEOMETRY — Figma canvas 1364px wide
+   All values expressed as fractions of the canvas so the layout
+   scales proportionally on every screen size.
+
+   Figma grey triangle: 244 x 576.828
      <path d="M0 576.828V0H244L0 576.828Z" fill="#F1EFED"/>
-   Vertices: (0,0) -> (244,0) -> (0,576.828)
-   A right triangle filling the UPPER-LEFT corner:
-     clip-path: polygon(0 0, 100% 0, 0 100%)
-   Hypotenuse leans 22.929 deg from vertical.
-   Every diagonal derives from WEDGE_RATIO, so all diagonals
-   on the page are parallel by construction.
+   WEDGE_RATIO = 244/576.828 = 0.423003 (angle 22.929 deg)
    ============================================================ */
-const FIGMA_W = 244;
-const FIGMA_H = 576.828;
-const WEDGE_RATIO = FIGMA_W / FIGMA_H;   // 0.423003 -> 22.929 deg
+const CW = 1364;                          // Figma canvas width (px)
+const vw = (px: number) => `${(px / CW) * 100}vw`;
 
-const runFor = (heightPx: number) => heightPx * WEDGE_RATIO;
+const FIGMA_W   = 244;
+const FIGMA_H   = 576.828;
+const WEDGE_RATIO = FIGMA_W / FIGMA_H;   // preserves the angle at every scale
 
-const HEADER_WEDGE_H = FIGMA_H;  // grey triangle deliberately spills past the header
-const CONTENT_H = 880;
+const runFor = (heightVw: number) => heightVw * WEDGE_RATIO;
 
-/* "Security" wordmark — exact Figma layer values
-   size 97.062 x 26.513, position x=101 y=74
-   Its right edge lands 3.4px clear of the diagonal. */
-const SEC_W = 97.062;
-const SEC_X = 101;
-const SEC_Y = 74;
+// All positions/sizes as fractions of the canvas
+const HEADER_WEDGE_H_VW  = (FIGMA_H / CW) * 100;    // 42.289vw
+const CONTENT_H_VW       = (880     / CW) * 100;    // 64.516vw
 
-/* NOIR — exact Figma values, taken from the "N" layer:
-   N is 45.848 x 92.694 at x=198, y=74.
-   Security ends at x=198.1 and N begins at x=198, so the two
-   wordmarks are flush and the diagonal passes between them.
-   The diagonal at N's top edge is x=212.7, i.e. it deliberately
-   slices ~14.7px across the N's top-left corner. That overlap is
-   part of the design, so NOIR must NOT be pushed clear of it. */
-const NOIR_X = 198;        // N left edge  (Security ends at 198.1 -> flush)
-const NOIR_BASELINE = 166.7;  // N bottom = 74 + 92.694
-const NOIR_H = 92.694;     // N height
-const NOIR_GAP = 7.762;    // tuned so NOIR spans exactly 198 -> 375.7 (Figma)
+// Security wordmark  (Figma: 97.062 x 26.513  at x=101 y=74)
+const SEC_X_VW  = (101     / CW) * 100;   // 7.405vw
+const SEC_Y_VW  = (74      / CW) * 100;   // 5.425vw
+const SEC_W_VW  = (97.062  / CW) * 100;   // 7.116vw
+
+// NOIR letters  (N: 45.848 x 92.694  at x=198 y=74 | R: at x=330)
+const NOIR_X_VW        = (198     / CW) * 100;   // 14.516vw
+const NOIR_H_VW        = (92.694  / CW) * 100;   // 6.796vw
+const NOIR_BASELINE_VW = (166.7   / CW) * 100;   // 12.221vw
+const NOIR_GAP_VW      = (7.762   / CW) * 100;   // 0.569vw
+
+// Header height
+const HDR_H_VW = (190 / CW) * 100;               // 13.930vw
+
+// Heading/content padding — matches design page (199px left pad, 29%/25% body)
+const PAD_LG_VW = (199 / CW) * 100;              // 14.589vw
 
 export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiveProps) {
   const [selectedDesign, setSelectedDesign] = useState<DesignVignette | null>(designVignettes[0]);
@@ -365,7 +365,21 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
   };
 
   return (
-    <div className="w-full overflow-x-hidden bg-[#0f1012]">
+    <div className="relative w-full overflow-x-hidden bg-[#0f1012]">
+
+      {/* Grey triangle — exact Figma shape: 244 x 576.828
+            <path d="M0 576.828V0H244L0 576.828Z" fill="#F1EFED"/>
+          Anchored to the PAGE ROOT, not the header, because it is 576.828px
+          tall and must run past the header's 190px without being clipped. */}
+      <div
+        aria-hidden="true"
+        className="absolute top-0 left-0 bg-[#f1efed] z-20 pointer-events-none"
+        style={{
+          width: `${runFor(HEADER_WEDGE_H_VW)}vw`,
+          height: `${HEADER_WEDGE_H_VW}vw`,
+          clipPath: 'polygon(0 0, 100% 0, 0 100%)',
+        }}
+      />
 
       {/* ═══ HEADER (dark background) ═══ */}
       <header className="bg-[#0f1012] text-[#f1efed] relative">
@@ -377,25 +391,16 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
               The wedge's slanted right edge is the divider between the two. */}
           <div
             className="relative flex-shrink-0 w-full lg:w-auto"
-            style={{ height: '190px' }}
+            style={{ height: `${HDR_H_VW}vw`, minHeight: '120px' }}
           >
-            {/* Grey triangle — exact Figma shape: polygon(0 0, 100% 0, 0 100%).
-                Right angle at top-left; hypotenuse top-right -> bottom-left.
-                Intentionally taller than the header so it continues past it. */}
-            <div
-              aria-hidden="true"
-              className="absolute top-0 left-0 bg-[#f1efed] z-0 pointer-events-none"
-              style={{
-                width: `${runFor(HEADER_WEDGE_H)}px`,
-                height: `${HEADER_WEDGE_H}px`,
-                clipPath: 'polygon(0 0, 100% 0, 0 100%)',
-              }}
-            />
-
             {/* "Security" — sits on the grey side */}
             <svg
-              className="absolute h-auto z-10"
-              style={{ width: `${SEC_W}px`, left: `${SEC_X}px`, top: `${SEC_Y}px` }}
+              className="absolute h-auto z-30"
+              style={{
+                width: `${SEC_W_VW}vw`,
+                left:  `${SEC_X_VW}vw`,
+                top:   `${SEC_Y_VW}vw`,
+              }}
               fill="none"
               viewBox="0 0 97.0622 26.5134"
             >
@@ -411,30 +416,30 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
 
             {/* NOIR — sits on the dark side, right of the diagonal */}
             <div
-              className="absolute flex items-end z-10"
+              className="absolute flex items-end z-30"
               style={{
-                left: `${NOIR_X}px`,
-                top: `${NOIR_BASELINE - NOIR_H}px`,
-                gap: `${NOIR_GAP}px`,
+                left: `${NOIR_X_VW}vw`,
+                top:  `${NOIR_BASELINE_VW - NOIR_H_VW}vw`,
+                gap:  `${NOIR_GAP_VW}vw`,
               }}
             >
-              <svg className="w-auto" style={{ height: `${NOIR_H}px` }} fill="none" viewBox="0 0 45.8477 92.6943">
+              <svg className="w-auto" style={{ height: `${NOIR_H_VW}vw`, minHeight: "32px" }} fill="none" viewBox="0 0 45.8477 92.6943">
                 <path d={svgPaths.p18a72800} fill="#F1EFED" />
               </svg>
-              <svg className="w-auto" style={{ height: `${NOIR_H}px` }} fill="none" viewBox="0 0 46 94">
+              <svg className="w-auto" style={{ height: `${NOIR_H_VW}vw`, minHeight: "32px" }} fill="none" viewBox="0 0 46 94">
                 <path d={svgPaths.p34a54771} fill="#F1EFED" />
               </svg>
-              <svg className="w-auto" style={{ height: `${NOIR_H}px` }} fill="none" viewBox="0 0 18.0657 93.5167">
+              <svg className="w-auto" style={{ height: `${NOIR_H_VW}vw`, minHeight: "32px" }} fill="none" viewBox="0 0 18.0657 93.5167">
                 <path d={svgPaths.p8082e80} fill="#F1EFED" />
               </svg>
-              <svg className="w-auto" style={{ height: `${NOIR_H}px` }} fill="none" viewBox="0 0 45.6957 93.5167">
+              <svg className="w-auto" style={{ height: `${NOIR_H_VW}vw`, minHeight: "32px" }} fill="none" viewBox="0 0 45.6957 93.5167">
                 <path d={svgPaths.p27865e00} fill="#F1EFED" />
               </svg>
             </div>
           </div>
 
           {/* RIGHT: Nav + Tagline */}
-          <div className="flex flex-col items-start lg:items-end px-4 sm:px-6 lg:px-0 pt-4 lg:pt-5 lg:pr-[150px] gap-3 lg:gap-4">
+          <div className="flex flex-col items-start lg:items-end gap-3 lg:gap-4 pt-4 lg:pt-5" style={{ paddingRight: `max(1.5rem, ${(150/CW)*100}vw)` }}>
             <nav className="flex gap-5 sm:gap-6">
               <button
                 onClick={() => onNavigate('designs')}
@@ -461,7 +466,7 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
         </div>
 
         {/* Heading + story list area */}
-        <div className="px-4 sm:px-6 lg:px-[199px] mt-6">
+        <div className="mt-6" style={{ paddingLeft: `max(1rem, ${PAD_LG_VW}vw)`, paddingRight: `max(1rem, ${PAD_LG_VW}vw)` }}>
           {/* Full-width divider (Line 1) */}
           <div className="border-t border-[#f1efed]" />
 
@@ -507,8 +512,8 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
         <div
           className="hidden lg:block absolute left-0 top-0 bg-[#0f1012] pointer-events-none"
           style={{
-            width: `${runFor(CONTENT_H)}px`,
-            height: `${CONTENT_H}px`,
+            width: `${runFor(CONTENT_H_VW)}vw`,
+            height: `${CONTENT_H_VW}vw`,
             clipPath: 'polygon(0 0, 100% 0, 0 100%)',
           }}
         />
@@ -539,7 +544,7 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
 
           {/* Story content */}
           {selectedDesign && (
-            <article className="px-4 sm:px-8 lg:pl-[29%] lg:pr-[25%] pt-4 pb-16">
+            <article className="pt-4 pb-16" style={{ paddingLeft: `max(1rem, ${PAD_LG_VW}vw)`, paddingRight: `max(1rem, 18vw)` }}>
               <h2
                 style={{ fontFamily: "'Anton', sans-serif" }}
                 className="text-black text-2xl sm:text-3xl mb-4"
