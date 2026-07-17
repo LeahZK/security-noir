@@ -327,6 +327,12 @@ const runFor = (heightPx: number) => heightPx * WEDGE_RATIO;
 const HEADER_WEDGE_H = FIGMA_H;  // grey triangle deliberately spills past the header
 const CONTENT_H = 880;
 
+/* Mobile hero wedge — same 22.929° angle, sized for the compact mobile header.
+   Not present in the Framer inspector captures, so this is a reasonable
+   proportional guess; tweak this one number if the live page needs it
+   bigger/smaller. */
+const MOBILE_WEDGE_H = 140;
+
 /* "Security" wordmark — exact Figma layer values
    size 97.062 x 26.513, position x=101 y=74
    Its right edge lands 3.4px clear of the diagonal. */
@@ -381,16 +387,33 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
         }}
       />
 
+      {/* Mobile/tablet grey wedge — same angle (WEDGE_RATIO), smaller footprint
+          for the compact mobile hero area. Tune MOBILE_WEDGE_H to taste. */}
+      <div
+        aria-hidden="true"
+        className="lg:hidden absolute top-0 left-0 bg-[#f1efed] z-20 pointer-events-none"
+        style={{
+          width: `${runFor(MOBILE_WEDGE_H)}px`,
+          height: `${MOBILE_WEDGE_H}px`,
+          clipPath: 'polygon(0 0, 100% 0, 0 100%)',
+        }}
+      />
+
       {/* ═══ HEADER (dark background) ═══ */}
       <header className="bg-[#0f1012] text-[#f1efed] relative">
 
-        {/* Top section: logo (left) + nav + tagline (right) */}
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+        {/* Top section: logo (left) + nav + tagline (right).
+            Row layout at EVERY breakpoint now (not just lg+) — this is the
+            fix for the mobile "stacking" bug. NOIR/Security keep their exact
+            Figma pixel size on all screens (they already read fine that
+            small); only the nav + tagline column narrows and shrinks its
+            type so it doesn't collide with NOIR on a 390px screen. */}
+        <div className="flex flex-row items-center justify-between">
 
           {/* LEFT: grey wedge holding "Security", NOIR sits on the dark side.
               The wedge's slanted right edge is the divider between the two. */}
           <div
-            className="relative flex-shrink-0 w-full lg:w-auto"
+            className="relative flex-shrink-0"
             style={{ height: '190px' }}
           >
             {/* "Security" — sits on the grey side */}
@@ -434,27 +457,29 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
             </div>
           </div>
 
-          {/* RIGHT: Nav + Tagline */}
-          <div className="flex flex-col items-start lg:items-end px-4 sm:px-6 lg:px-0 pt-4 lg:pt-5 lg:pr-[150px] gap-3 lg:gap-4">
-            <nav className="flex gap-5 sm:gap-6">
+          {/* RIGHT: Nav + Tagline — pinned top-right at every breakpoint.
+              Narrower column + smaller type on mobile so it doesn't collide
+              with NOIR, which keeps its Figma pixel size on all screens. */}
+          <div className="flex flex-col items-end px-4 sm:px-6 lg:px-0 pt-3 sm:pt-4 lg:pt-5 lg:pr-[150px] gap-2 sm:gap-3 lg:gap-4">
+            <nav className="flex gap-3 sm:gap-4 lg:gap-6">
               <button
                 onClick={() => onNavigate('designs')}
                 style={{ fontFamily: "'Anton', sans-serif" }}
-                className="text-[#f1efed] text-lg sm:text-xl hover:opacity-80 transition-opacity"
+                className="text-[#f1efed] text-xs sm:text-sm lg:text-lg xl:text-xl hover:opacity-80 transition-opacity"
               >
                 DESIGNS/
               </button>
               <button
                 onClick={() => onNavigate('about')}
                 style={{ fontFamily: "'Anton', sans-serif" }}
-                className="text-[#cfcfcf] text-lg sm:text-xl hover:text-[#f1efed] transition-colors"
+                className="text-[#cfcfcf] text-xs sm:text-sm lg:text-lg xl:text-xl hover:text-[#f1efed] transition-colors"
               >
                 ABOUT/
               </button>
             </nav>
             <p
               style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}
-              className="italic text-[#f1efed] text-base leading-[22px] max-w-sm lg:max-w-[375px] lg:text-left"
+              className="italic text-[#f1efed] text-[10px] sm:text-xs lg:text-base leading-[14px] sm:leading-4 lg:leading-[22px] max-w-[130px] sm:max-w-[220px] lg:max-w-[375px] text-left"
             >
               A collection of critical designs and short stories that use imaginary but plausible technologies to expose real security and privacy risks through satire, humor, and absurdity.
             </p>
@@ -477,7 +502,7 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
           {/* Shorter divider (Line 2) */}
           <div className="border-t border-[#f1efed] mt-3 w-64 sm:w-80 lg:w-[376px]" />
 
-          {/* Story list: 5 columns on large screens */}
+          {/* Story list: 2 columns on mobile, 3 on tablet, 5 on desktop */}
           <div
             className="mt-6 pb-8 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-x-4 gap-y-1"
             style={{ fontFamily: "'Inter', sans-serif" }}
@@ -486,7 +511,7 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
               <button
                 key={design.id}
                 onClick={() => setSelectedDesign(design)}
-                className={`text-left text-base leading-[22px] text-[#f1efed] hover:underline transition-all py-0.5 ${
+                className={`text-left text-xs sm:text-sm lg:text-base leading-[18px] sm:leading-[20px] lg:leading-[22px] text-[#f1efed] hover:underline transition-all py-0.5 ${
                   selectedDesign?.id === design.id ? 'font-bold' : 'font-light'
                 }`}
               >
