@@ -141,6 +141,7 @@ export default function AboutPageResponsive({ onNavigate }: AboutPageResponsiveP
 
       {/* ═══ HEADER (dark background) ═══ */}
       <header className="bg-[#0f1012] text-[#f1efed] relative">
+        <div className="min-[1200px]:max-w-[1364px] min-[1200px]:mx-auto">
 
         {/* Top section: logo (left) + nav + tagline (right).
             Row layout at EVERY breakpoint (mirrors DesignPageResponsive.tsx) —
@@ -150,7 +151,7 @@ export default function AboutPageResponsive({ onNavigate }: AboutPageResponsiveP
         <div className="block min-[600px]:hidden">
           <div className="flex flex-row items-start justify-between px-4 pt-3">
             <div
-              className="relative flex-shrink-0 cursor-pointer"
+              className="relative flex-shrink-0 w-[223px] cursor-pointer"
               style={{ height: `${MOBILE_LOGO_CONTAINER_H}px` }}
               onClick={handleLogoClick}
               role="button"
@@ -210,7 +211,7 @@ export default function AboutPageResponsive({ onNavigate }: AboutPageResponsiveP
             </nav>
           </div>
 
-          <p className="font-['Inria_Serif'] font-normal text-[#f1efed] text-[10px] leading-[22px] mt-[36px] px-[21px]">
+          <p className="font-['Inria_Serif'] font-normal text-[#f1efed] text-[10px] leading-[22px] mt-[36px] pl-[21px] pr-[43px]">
             A collection of critical designs and short stories that use imaginary but plausible technologies to expose real security and privacy risks through satire, humor, and absurdity.
           </p>
         </div>
@@ -219,7 +220,7 @@ export default function AboutPageResponsive({ onNavigate }: AboutPageResponsiveP
         <div className="hidden min-[600px]:flex flex-row items-center justify-between">
 
           <div
-            className="relative flex-shrink-0 h-[190px] cursor-pointer"
+            className="relative flex-shrink-0 w-[377px] h-[190px] cursor-pointer"
             onClick={handleLogoClick}
             role="button"
             tabIndex={0}
@@ -287,7 +288,7 @@ export default function AboutPageResponsive({ onNavigate }: AboutPageResponsiveP
         </div>
 
         {/* Heading + intro area — same structure as the design page */}
-        <div className="px-4 min-[600px]:max-[1199px]:px-6 min-[1200px]:px-[199px] mt-6">
+        <div className="px-4 min-[600px]:max-[1199px]:px-6 min-[1200px]:px-[199px] mt-[37px] min-[600px]:mt-6">
           {/* Full-width divider (Line 1) */}
           <div className="border-t border-[#f1efed]" />
 
@@ -295,7 +296,7 @@ export default function AboutPageResponsive({ onNavigate }: AboutPageResponsiveP
               (inline-block + border-bottom) instead of a hardcoded px value. */}
           <h1
             style={{ fontFamily: "'Anton', sans-serif" }}
-            className="inline-block border-b border-[#f1efed] pb-3 text-[#f1efed] text-3xl min-[600px]:max-[1199px]:text-[32px] min-[1200px]:text-[38px] leading-tight mt-4"
+            className="inline-block border-b border-[#f1efed] pb-3 text-[#f1efed] text-3xl min-[600px]:max-[1199px]:text-[32px] min-[1200px]:text-[38px] leading-tight mt-[20px] min-[600px]:mt-4"
           >
             About
           </h1>
@@ -316,6 +317,7 @@ export default function AboutPageResponsive({ onNavigate }: AboutPageResponsiveP
             <span className="font-extrabold">short narrative vignettes</span> that
             illustrate how technologies might be experienced in everyday life.
           </p>
+        </div>
         </div>
       </header>
 
@@ -346,10 +348,10 @@ export default function AboutPageResponsive({ onNavigate }: AboutPageResponsiveP
           }}
         />
 
-        <main className="relative flex-1">
+        <main className="relative flex-1 min-[1200px]:max-w-[1364px] min-[1200px]:mx-auto">
           {/* Tablet insets (pl 194px / pr 12px) confirmed from Figma —
               asymmetric since tablet has no reserved right strip. */}
-          <div className="pl-4 pr-4 min-[600px]:max-[1199px]:pl-[194px] min-[600px]:max-[1199px]:pr-[12px] min-[1200px]:pl-[29%] min-[1200px]:pr-[14.6%] pt-10 min-[600px]:max-[1199px]:pt-12 min-[1200px]:pt-16 pb-16">
+          <div className="pl-4 pr-4 min-[600px]:max-[1199px]:pl-[194px] min-[600px]:max-[1199px]:pr-[12px] min-[1200px]:pl-[29%] min-[1200px]:pr-[25%] pt-10 min-[600px]:max-[1199px]:pt-12 min-[1200px]:pt-16 pb-16">
             <h2
               style={{ fontFamily: "'Anton', sans-serif" }}
               className="text-black text-2xl min-[1200px]:text-3xl mb-6"
@@ -358,9 +360,9 @@ export default function AboutPageResponsive({ onNavigate }: AboutPageResponsiveP
             </h2>
 
             {/* One card per team member: circular photo + name + bio text.
-                Photo: 110px mobile, 140px tablet (confirmed), 80px desktop
-                (confirmed: back-calculated from Figma's text-box Left=502 —
-                396(29% inset) + 80(photo) + 24(gap) = 500 ≈ 502). Text width
+                Photo: 110px mobile, 140px tablet, 164px desktop — all
+                confirmed directly from Figma (the earlier 80px guess, back-
+                calculated from a text-box position, was wrong). Text width
                 on desktop is explicitly 628px (confirmed), which is why
                 photo has to shrink — otherwise there isn't room for it. */}
             <div className="flex flex-col gap-8 min-[600px]:gap-10">
@@ -369,7 +371,7 @@ export default function AboutPageResponsive({ onNavigate }: AboutPageResponsiveP
                   <img
                     src={member.photo}
                     alt={member.name}
-                    className="w-[110px] h-[110px] min-[600px]:max-[1199px]:w-[140px] min-[600px]:max-[1199px]:h-[140px] min-[1200px]:w-[80px] min-[1200px]:h-[80px] rounded-full object-cover flex-shrink-0"
+                    className="w-[110px] h-[110px] min-[600px]:max-[1199px]:w-[140px] min-[600px]:max-[1199px]:h-[140px] min-[1200px]:w-[164px] min-[1200px]:h-[164px] rounded-full object-cover flex-shrink-0"
                   />
                   <div className="min-[1200px]:w-[628px]">
                     <h3
