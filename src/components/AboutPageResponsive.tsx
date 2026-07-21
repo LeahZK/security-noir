@@ -70,6 +70,31 @@ const MOBILE_NOIR_H = NOIR_H * MOBILE_LOGO_SCALE;
 const MOBILE_NOIR_GAP = NOIR_GAP * MOBILE_LOGO_SCALE;
 const MOBILE_LOGO_CONTAINER_H = 122; // scaled from desktop's 190px container the same way
 
+interface TeamMember {
+  name: string;
+  photo: string;
+  bio: string;
+}
+
+/* Display order confirmed by user: Didem, Leah, Jeremy. */
+const team: TeamMember[] = [
+  {
+    name: "Didem Demirag",
+    photo: "team/Didem.jpg",
+    bio: "Didem Demirag holds a PhD in Information and Systems Engineering from Concordia University and is currently a lecturer in the Department of Computer Science at UQAM. She is also a graphic designer, passionate about making complex scientific concepts accessible through visual storytelling and creative approaches. She teaches courses in information security and computer science and society, exploring the relationship between technology, ethics, and society. Her research interests focus on data privacy and applied cryptography. She has also conducted research on scientific writing, examining how researchers use the opening sentences of their papers to establish context and engage readers."
+  },
+  {
+    name: "Leah Zhang-Kennedy",
+    photo: "team/leah_300x300.png",
+    bio: "Leah Zhang-Kennedy is an Associate Professor of Interaction Design and User Experience Research, and directs the Safe Interactions Lab at the Stratford School of Interaction Design and Business, University of Waterloo. Zhang-Kennedy's research aims to understand and improve people's digital experiences, knowledge, and technology practices, with particular focuses on computer security, online privacy, and digital literacy. Her research bridges multidisciplinary expertise in human-computer interaction (HCI), user experience design and research (UX), and graphic design."
+  },
+  {
+    name: "Jeremy Clark",
+    photo: "team/media_8105_512.jpg",
+    bio: "Jeremy Clark is a professor in Cybersecurity and Intelligent Systems Engineering at Concordia University. He obtained his PhD from the University of Waterloo, where his gold medal dissertation was on designing and deploying secure voting systems including Scantegrity—the first cryptographically verifiable system used in a public sector election. His work continues to examine how emerging technologies shape public institutions, from secure elections to digital currencies, and he has advised municipalities and testified before Canadian parliamentary committees on these issues."
+  }
+];
+
 export default function AboutPageResponsive({ onNavigate }: AboutPageResponsiveProps) {
   return (
     <div className="relative w-full overflow-x-hidden bg-[#0f1012]">
@@ -305,22 +330,46 @@ export default function AboutPageResponsive({ onNavigate }: AboutPageResponsiveP
         />
 
         <main className="relative flex-1">
-          {/* Tablet insets (pl 194px / pr 12px) match the design page's
-              story panel — asymmetric since there's no reserved right strip
-              on tablet. */}
+          {/* Tablet insets (pl 194px / pr 12px) confirmed from Figma —
+              asymmetric since tablet has no reserved right strip. */}
           <div className="pl-4 pr-4 min-[600px]:max-[1199px]:pl-[194px] min-[600px]:max-[1199px]:pr-[12px] min-[1200px]:pl-[29%] min-[1200px]:pr-[25%] pt-10 min-[600px]:max-[1199px]:pt-12 min-[1200px]:pt-16 pb-16">
             <h2
               style={{ fontFamily: "'Anton', sans-serif" }}
-              className="text-black text-2xl min-[1200px]:text-3xl mb-4"
+              className="text-black text-2xl min-[1200px]:text-3xl mb-6"
             >
               Bio
             </h2>
-            <p
-              style={{ fontFamily: "'Inria Serif', serif" }}
-              className="text-black text-base min-[600px]:text-lg leading-[25px]"
-            >
-              Anonymized for peer review.
-            </p>
+
+            {/* One card per team member: circular photo + name + bio text.
+                Photo is 56px on mobile, 140px on tablet+desktop (140px
+                confirmed from Figma — no distinct desktop number exists yet,
+                so tablet's value carries through to desktop for now). Name
+                is 22px on tablet (confirmed), scaling up on desktop. */}
+            <div className="flex flex-col gap-8 min-[600px]:gap-10">
+              {team.map((member) => (
+                <div key={member.name} className="flex flex-row items-start gap-4 min-[600px]:gap-6">
+                  <img
+                    src={member.photo}
+                    alt={member.name}
+                    className="w-[110px] h-[110px] min-[600px]:w-[140px] min-[600px]:h-[140px] rounded-full object-cover flex-shrink-0"
+                  />
+                  <div>
+                    <h3
+                      style={{ fontFamily: "'Anton', sans-serif" }}
+                      className="text-black text-lg min-[600px]:max-[1199px]:text-[22px] min-[1200px]:text-2xl mb-2"
+                    >
+                      {member.name}
+                    </h3>
+                    <p
+                      style={{ fontFamily: "'Inria Serif', serif" }}
+                      className="text-black text-sm min-[600px]:max-[1199px]:text-base min-[1200px]:text-lg leading-[22px] min-[600px]:max-[1199px]:leading-[24px] min-[1200px]:leading-[25px]"
+                    >
+                      {member.bio}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </main>
       </div>
