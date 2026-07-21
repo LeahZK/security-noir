@@ -1,3 +1,4 @@
+import type { KeyboardEvent } from 'react';
 import svgPaths from "../imports/svg-m0bqbyr8st";
 
 interface AboutPageResponsiveProps {
@@ -96,6 +97,9 @@ const team: TeamMember[] = [
 ];
 
 export default function AboutPageResponsive({ onNavigate }: AboutPageResponsiveProps) {
+  // Clicking the NOIR logo returns to the Design page.
+  const handleLogoClick = () => onNavigate('designs');
+
   return (
     <div className="relative w-full overflow-x-hidden bg-[#0f1012]">
 
@@ -142,16 +146,18 @@ export default function AboutPageResponsive({ onNavigate }: AboutPageResponsiveP
             Row layout at EVERY breakpoint (mirrors DesignPageResponsive.tsx) —
             fixes the mobile "stacking" bug where nav/tagline used to fall
             below the logo instead of sitting beside it. */}
-        <div className="flex flex-row items-center justify-between">
-
-          {/* LEFT: grey wedge holding "Security", NOIR sits on the dark side.
-              Two variants: mobile (scaled ~64%, confirmed from Figma) and
-              tablet+desktop (full Figma pixel size). */}
-          <div
-            className="relative flex-shrink-0 h-[120px] min-[600px]:h-[190px]"
-          >
-            {/* ---- Mobile logo (below 600px) ---- */}
-            <div className="block min-[600px]:hidden">
+        {/* ═══ MOBILE header top (below 600px) ═══ */}
+        <div className="block min-[600px]:hidden">
+          <div className="flex flex-row items-start justify-between px-4 pt-3">
+            <div
+              className="relative flex-shrink-0 cursor-pointer"
+              style={{ height: `${MOBILE_LOGO_CONTAINER_H}px` }}
+              onClick={handleLogoClick}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e: KeyboardEvent) => { if (e.key === 'Enter' || e.key === ' ') handleLogoClick(); }}
+              aria-label="Go to Design page"
+            >
               <svg
                 className="absolute h-auto z-30"
                 style={{ width: `${MOBILE_SEC_W}px`, left: `${MOBILE_SEC_X}px`, top: `${MOBILE_SEC_Y}px` }}
@@ -167,14 +173,9 @@ export default function AboutPageResponsive({ onNavigate }: AboutPageResponsiveP
                 <path d={svgPaths.p3c5f4500} fill="#0F1012" />
                 <path d={svgPaths.p38a85680} fill="#0F1012" />
               </svg>
-
               <div
                 className="absolute flex items-end z-30"
-                style={{
-                  left: `${MOBILE_NOIR_X}px`,
-                  top: `${MOBILE_NOIR_TOP}px`,
-                  gap: `${MOBILE_NOIR_GAP}px`,
-                }}
+                style={{ left: `${MOBILE_NOIR_X}px`, top: `${MOBILE_NOIR_TOP}px`, gap: `${MOBILE_NOIR_GAP}px` }}
               >
                 <svg className="w-auto" style={{ height: `${MOBILE_NOIR_H}px` }} fill="none" viewBox="0 0 45.8477 92.6943">
                   <path d={svgPaths.p18a72800} fill="#F1EFED" />
@@ -191,76 +192,94 @@ export default function AboutPageResponsive({ onNavigate }: AboutPageResponsiveP
               </div>
             </div>
 
-            {/* ---- Tablet + desktop logo (600px+), full Figma size ---- */}
-            <div className="hidden min-[600px]:block">
-              {/* "Security" — sits on the grey side */}
-              <svg
-                className="absolute h-auto z-30"
-                style={{ width: `${SEC_W}px`, left: `${SEC_X}px`, top: `${SEC_Y}px` }}
-                fill="none"
-                viewBox="0 0 97.0622 26.5134"
-              >
-                <path d={svgPaths.p1567f280} fill="#0F1012" />
-                <path d={svgPaths.p2f943800} fill="#0F1012" />
-                <path d={svgPaths.p857c700} fill="#0F1012" />
-                <path d={svgPaths.p8cbaa80} fill="#0F1012" />
-                <path d={svgPaths.p30bf6cc0} fill="#0F1012" />
-                <path d={svgPaths.p14adf900} fill="#0F1012" />
-                <path d={svgPaths.p3c5f4500} fill="#0F1012" />
-                <path d={svgPaths.p38a85680} fill="#0F1012" />
-              </svg>
-
-              {/* NOIR — sits on the dark side, right of the diagonal */}
-              <div
-                className="absolute flex items-end z-30"
-                style={{
-                  left: `${NOIR_X}px`,
-                  top: `${NOIR_BASELINE - NOIR_H}px`,
-                  gap: `${NOIR_GAP}px`,
-                }}
-              >
-                <svg className="w-auto" style={{ height: `${NOIR_H}px` }} fill="none" viewBox="0 0 45.8477 92.6943">
-                  <path d={svgPaths.p18a72800} fill="#F1EFED" />
-                </svg>
-                <svg className="w-auto" style={{ height: `${NOIR_H}px` }} fill="none" viewBox="0 0 46 94">
-                  <path d={svgPaths.p34a54771} fill="#F1EFED" />
-                </svg>
-                <svg className="w-auto" style={{ height: `${NOIR_H}px` }} fill="none" viewBox="0 0 18.0657 93.5167">
-                  <path d={svgPaths.p8082e80} fill="#F1EFED" />
-                </svg>
-                <svg className="w-auto" style={{ height: `${NOIR_H}px` }} fill="none" viewBox="0 0 45.6957 93.5167">
-                  <path d={svgPaths.p27865e00} fill="#F1EFED" />
-                </svg>
-              </div>
-            </div>
-          </div>
-
-          {/* RIGHT: Nav + Tagline — pinned top-right at every breakpoint.
-              Narrower column + smaller type on mobile so it doesn't collide
-              with NOIR, which keeps its Figma pixel size on all screens.
-              (Same values as DesignPageResponsive.tsx; only the active/
-              inactive nav colors differ, since ABOUT/ is active here.) */}
-          <div className="flex flex-col items-end px-4 min-[600px]:max-[1199px]:px-6 min-[1200px]:px-0 pt-3 min-[600px]:max-[1199px]:pt-4 min-[1200px]:pt-5 min-[1200px]:pr-[150px] gap-2 min-[600px]:max-[1199px]:gap-3 min-[1200px]:gap-4">
-            <nav className="flex gap-3 min-[600px]:max-[1199px]:gap-4 min-[1200px]:gap-6">
+            <nav className="flex gap-3 pt-1">
               <button
                 onClick={() => onNavigate('designs')}
                 style={{ fontFamily: "'Anton', sans-serif" }}
-                className="text-[#cfcfcf] text-[16px] min-[600px]:max-[1199px]:text-[20px] min-[1200px]:text-lg hover:text-[#f1efed] transition-colors"
+                className="text-[#cfcfcf] text-[16px] hover:text-[#f1efed] transition-colors"
               >
                 DESIGNS/
               </button>
               <button
                 onClick={() => onNavigate('about')}
                 style={{ fontFamily: "'Anton', sans-serif" }}
-                className="text-[#f1efed] text-[16px] min-[600px]:max-[1199px]:text-[20px] min-[1200px]:text-lg hover:opacity-80 transition-opacity"
+                className="text-[#f1efed] text-[16px] hover:opacity-80 transition-opacity"
               >
                 ABOUT/
               </button>
             </nav>
-            {/* Tagline: Inria Serif Regular at every breakpoint (confirmed
-                from Figma) — size/width still scale per breakpoint. */}
+          </div>
+
+          <p className="font-['Inria_Serif'] font-normal text-[#f1efed] text-[10px] leading-[22px] mt-[36px] px-[21px]">
+            A collection of critical designs and short stories that use imaginary but plausible technologies to expose real security and privacy risks through satire, humor, and absurdity.
+          </p>
+        </div>
+
+        {/* ═══ TABLET + DESKTOP header top (600px+) ═══ */}
+        <div className="hidden min-[600px]:flex flex-row items-center justify-between">
+
+          <div
+            className="relative flex-shrink-0 h-[190px] cursor-pointer"
+            onClick={handleLogoClick}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e: KeyboardEvent) => { if (e.key === 'Enter' || e.key === ' ') handleLogoClick(); }}
+            aria-label="Go to Design page"
+          >
+            <svg
+              className="absolute h-auto z-30"
+              style={{ width: `${SEC_W}px`, left: `${SEC_X}px`, top: `${SEC_Y}px` }}
+              fill="none"
+              viewBox="0 0 97.0622 26.5134"
+            >
+              <path d={svgPaths.p1567f280} fill="#0F1012" />
+              <path d={svgPaths.p2f943800} fill="#0F1012" />
+              <path d={svgPaths.p857c700} fill="#0F1012" />
+              <path d={svgPaths.p8cbaa80} fill="#0F1012" />
+              <path d={svgPaths.p30bf6cc0} fill="#0F1012" />
+              <path d={svgPaths.p14adf900} fill="#0F1012" />
+              <path d={svgPaths.p3c5f4500} fill="#0F1012" />
+              <path d={svgPaths.p38a85680} fill="#0F1012" />
+            </svg>
+
+            <div
+              className="absolute flex items-end z-30"
+              style={{ left: `${NOIR_X}px`, top: `${NOIR_BASELINE - NOIR_H}px`, gap: `${NOIR_GAP}px` }}
+            >
+              <svg className="w-auto" style={{ height: `${NOIR_H}px` }} fill="none" viewBox="0 0 45.8477 92.6943">
+                <path d={svgPaths.p18a72800} fill="#F1EFED" />
+              </svg>
+              <svg className="w-auto" style={{ height: `${NOIR_H}px` }} fill="none" viewBox="0 0 46 94">
+                <path d={svgPaths.p34a54771} fill="#F1EFED" />
+              </svg>
+              <svg className="w-auto" style={{ height: `${NOIR_H}px` }} fill="none" viewBox="0 0 18.0657 93.5167">
+                <path d={svgPaths.p8082e80} fill="#F1EFED" />
+              </svg>
+              <svg className="w-auto" style={{ height: `${NOIR_H}px` }} fill="none" viewBox="0 0 45.6957 93.5167">
+                <path d={svgPaths.p27865e00} fill="#F1EFED" />
+              </svg>
+            </div>
+          </div>
+
+          <div className="flex flex-col items-end min-[600px]:max-[1199px]:px-6 min-[1200px]:px-0 min-[600px]:max-[1199px]:pt-4 min-[1200px]:pt-5 min-[1200px]:pr-[150px] min-[600px]:max-[1199px]:gap-3 min-[1200px]:gap-4">
+            <nav className="flex min-[600px]:max-[1199px]:gap-4 min-[1200px]:gap-6">
+              <button
+                onClick={() => onNavigate('designs')}
+                style={{ fontFamily: "'Anton', sans-serif" }}
+                className="text-[#cfcfcf] min-[600px]:max-[1199px]:text-[20px] min-[1200px]:text-lg hover:text-[#f1efed] transition-colors"
+              >
+                DESIGNS/
+              </button>
+              <button
+                onClick={() => onNavigate('about')}
+                style={{ fontFamily: "'Anton', sans-serif" }}
+                className="text-[#f1efed] min-[600px]:max-[1199px]:text-[20px] min-[1200px]:text-lg hover:opacity-80 transition-opacity"
+              >
+                ABOUT/
+              </button>
+            </nav>
             <p
-              className="font-['Inria_Serif'] font-normal text-[#f1efed] text-[10px] min-[600px]:max-[1199px]:text-[13px] min-[1200px]:text-base leading-[22px] max-w-[305px] min-[600px]:max-[1199px]:max-w-[375px] min-[1200px]:max-w-[375px] text-left"
+              className="font-['Inria_Serif'] font-normal min-[1200px]:font-['Inter'] min-[1200px]:font-medium text-[#f1efed] min-[600px]:max-[1199px]:text-[13px] min-[1200px]:text-base min-[600px]:max-[1199px]:leading-[22px] min-[1200px]:leading-[22px] min-[600px]:max-[1199px]:max-w-[375px] min-[1200px]:max-w-[375px] text-left"
             >
               A collection of critical designs and short stories that use imaginary but plausible technologies to expose real security and privacy risks through satire, humor, and absurdity.
             </p>
@@ -330,7 +349,7 @@ export default function AboutPageResponsive({ onNavigate }: AboutPageResponsiveP
         <main className="relative flex-1">
           {/* Tablet insets (pl 194px / pr 12px) confirmed from Figma —
               asymmetric since tablet has no reserved right strip. */}
-          <div className="pl-4 pr-4 min-[600px]:max-[1199px]:pl-[194px] min-[600px]:max-[1199px]:pr-[12px] min-[1200px]:pl-[29%] min-[1200px]:pr-[25%] pt-10 min-[600px]:max-[1199px]:pt-12 min-[1200px]:pt-16 pb-16">
+          <div className="pl-4 pr-4 min-[600px]:max-[1199px]:pl-[194px] min-[600px]:max-[1199px]:pr-[12px] min-[1200px]:pl-[29%] min-[1200px]:pr-[14.6%] pt-10 min-[600px]:max-[1199px]:pt-12 min-[1200px]:pt-16 pb-16">
             <h2
               style={{ fontFamily: "'Anton', sans-serif" }}
               className="text-black text-2xl min-[1200px]:text-3xl mb-6"
@@ -339,19 +358,20 @@ export default function AboutPageResponsive({ onNavigate }: AboutPageResponsiveP
             </h2>
 
             {/* One card per team member: circular photo + name + bio text.
-                Photo is 56px on mobile, 140px on tablet+desktop (140px
-                confirmed from Figma — no distinct desktop number exists yet,
-                so tablet's value carries through to desktop for now). Name
-                is 22px on tablet (confirmed), scaling up on desktop. */}
+                Photo: 110px mobile, 140px tablet (confirmed), 80px desktop
+                (confirmed: back-calculated from Figma's text-box Left=502 —
+                396(29% inset) + 80(photo) + 24(gap) = 500 ≈ 502). Text width
+                on desktop is explicitly 628px (confirmed), which is why
+                photo has to shrink — otherwise there isn't room for it. */}
             <div className="flex flex-col gap-8 min-[600px]:gap-10">
               {team.map((member) => (
                 <div key={member.name} className="flex flex-row items-start gap-4 min-[600px]:gap-6">
                   <img
                     src={member.photo}
                     alt={member.name}
-                    className="w-[110px] h-[110px] min-[600px]:w-[140px] min-[600px]:h-[140px] rounded-full object-cover flex-shrink-0"
+                    className="w-[110px] h-[110px] min-[600px]:max-[1199px]:w-[140px] min-[600px]:max-[1199px]:h-[140px] min-[1200px]:w-[80px] min-[1200px]:h-[80px] rounded-full object-cover flex-shrink-0"
                   />
-                  <div>
+                  <div className="min-[1200px]:w-[628px]">
                     <h3
                       style={{ fontFamily: "'Anton', sans-serif" }}
                       className="text-black text-lg min-[600px]:max-[1199px]:text-[22px] min-[1200px]:text-2xl mb-2"
