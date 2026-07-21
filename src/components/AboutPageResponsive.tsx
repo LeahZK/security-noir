@@ -24,10 +24,9 @@ const runFor = (heightPx: number) => heightPx * WEDGE_RATIO;
 const HEADER_WEDGE_H = FIGMA_H;  // grey triangle deliberately spills past the header
 const CONTENT_H = 880;
 
-/* Mobile hero wedge — same 22.929° angle, sized for the compact mobile header.
-   Kept identical to DesignPageResponsive.tsx so both pages match; tweak
-   this one number on both files together if it needs to change. */
-const MOBILE_WEDGE_H = 140;
+/* Mobile hero wedge — confirmed from Figma: 108 x 256 (108/256 = 0.4219,
+   matches WEDGE_RATIO). The earlier 140 was a guess before this capture. */
+const MOBILE_WEDGE_H = 256;
 
 /* Tablet wedges — confirmed from Figma (iPad Pro 11", 834px frame):
    header wedge SVG measured 204x482 (204/482 = 0.4232, matches WEDGE_RATIO),
@@ -54,21 +53,20 @@ const NOIR_BASELINE = 166.7;  // N bottom = 74 + 92.694
 const NOIR_H = 92.694;     // N height
 const NOIR_GAP = 7.762;    // tuned so NOIR spans exactly 198 -> 375.7 (Figma)
 
-/* Mobile logo scale — confirmed from Figma: Security+NOIR combined bounding
-   box measured 175 x 60.287 on the 390px mobile frame, vs 274.7 x 92.694
-   combined on desktop. That's ~0.637 (width) and ~0.650 (height) — close
-   enough to be one uniform scale, not a stretch/squish. Using 0.64 and
-   deriving every mobile position/size from it, rather than hand-tuning each
-   number, keeps the whole lockup proportional if this ever needs retuning. */
-const MOBILE_LOGO_SCALE = 0.64;
-const MOBILE_SEC_W = SEC_W * MOBILE_LOGO_SCALE;
-const MOBILE_SEC_X = SEC_X * MOBILE_LOGO_SCALE;
-const MOBILE_SEC_Y = SEC_Y * MOBILE_LOGO_SCALE;
-const MOBILE_NOIR_X = NOIR_X * MOBILE_LOGO_SCALE;
-const MOBILE_NOIR_BASELINE = NOIR_BASELINE * MOBILE_LOGO_SCALE;
-const MOBILE_NOIR_H = NOIR_H * MOBILE_LOGO_SCALE;
-const MOBILE_NOIR_GAP = NOIR_GAP * MOBILE_LOGO_SCALE;
-const MOBILE_LOGO_CONTAINER_H = 122; // scaled from desktop's 190px container the same way
+/* Mobile logo — confirmed from Figma (390px frame, Frame 22). Widths/heights
+   still follow a ~0.64 scale of desktop (Security: 61.766/97.062=0.636;
+   N: 59.45/92.694=0.641) but the position is NOT simply desktop's X/Y times
+   0.64: on mobile, Security and NOIR are placed with their own deliberate
+   gap (34.5px) instead of sitting flush like on desktop. These are direct
+   measured values, not a formula. */
+const MOBILE_SEC_W = 61.766;
+const MOBILE_SEC_X = 12;
+const MOBILE_SEC_Y = 57;
+const MOBILE_NOIR_X = 108.291;
+const MOBILE_NOIR_TOP = 57;
+const MOBILE_NOIR_H = 59.45;
+const MOBILE_NOIR_GAP = NOIR_GAP * 0.64; // no separate capture for inter-letter gap; scale carries over
+const MOBILE_LOGO_CONTAINER_H = 120; // fits Security+NOIR's real bottom edge (57+59.45=116.45) with a little room
 
 interface TeamMember {
   name: string;
@@ -150,7 +148,7 @@ export default function AboutPageResponsive({ onNavigate }: AboutPageResponsiveP
               Two variants: mobile (scaled ~64%, confirmed from Figma) and
               tablet+desktop (full Figma pixel size). */}
           <div
-            className="relative flex-shrink-0 h-[122px] min-[600px]:h-[190px]"
+            className="relative flex-shrink-0 h-[120px] min-[600px]:h-[190px]"
           >
             {/* ---- Mobile logo (below 600px) ---- */}
             <div className="block min-[600px]:hidden">
@@ -174,7 +172,7 @@ export default function AboutPageResponsive({ onNavigate }: AboutPageResponsiveP
                 className="absolute flex items-end z-30"
                 style={{
                   left: `${MOBILE_NOIR_X}px`,
-                  top: `${MOBILE_NOIR_BASELINE - MOBILE_NOIR_H}px`,
+                  top: `${MOBILE_NOIR_TOP}px`,
                   gap: `${MOBILE_NOIR_GAP}px`,
                 }}
               >
@@ -247,14 +245,14 @@ export default function AboutPageResponsive({ onNavigate }: AboutPageResponsiveP
               <button
                 onClick={() => onNavigate('designs')}
                 style={{ fontFamily: "'Anton', sans-serif" }}
-                className="text-[#cfcfcf] text-xs min-[600px]:max-[1199px]:text-[20px] min-[1200px]:text-lg hover:text-[#f1efed] transition-colors"
+                className="text-[#cfcfcf] text-[16px] min-[600px]:max-[1199px]:text-[20px] min-[1200px]:text-lg hover:text-[#f1efed] transition-colors"
               >
                 DESIGNS/
               </button>
               <button
                 onClick={() => onNavigate('about')}
                 style={{ fontFamily: "'Anton', sans-serif" }}
-                className="text-[#f1efed] text-xs min-[600px]:max-[1199px]:text-[20px] min-[1200px]:text-lg hover:opacity-80 transition-opacity"
+                className="text-[#f1efed] text-[16px] min-[600px]:max-[1199px]:text-[20px] min-[1200px]:text-lg hover:opacity-80 transition-opacity"
               >
                 ABOUT/
               </button>
@@ -262,7 +260,7 @@ export default function AboutPageResponsive({ onNavigate }: AboutPageResponsiveP
             {/* Tagline: Inria Serif Regular at every breakpoint (confirmed
                 from Figma) — size/width still scale per breakpoint. */}
             <p
-              className="font-['Inria_Serif'] font-normal text-[#f1efed] text-[10px] min-[600px]:max-[1199px]:text-[13px] min-[1200px]:text-base leading-[14px] min-[600px]:max-[1199px]:leading-[22px] min-[1200px]:leading-[22px] max-w-[130px] min-[600px]:max-[1199px]:max-w-[375px] min-[1200px]:max-w-[375px] text-left"
+              className="font-['Inria_Serif'] font-normal text-[#f1efed] text-[10px] min-[600px]:max-[1199px]:text-[13px] min-[1200px]:text-base leading-[22px] max-w-[305px] min-[600px]:max-[1199px]:max-w-[375px] min-[1200px]:max-w-[375px] text-left"
             >
               A collection of critical designs and short stories that use imaginary but plausible technologies to expose real security and privacy risks through satire, humor, and absurdity.
             </p>
@@ -374,10 +372,10 @@ export default function AboutPageResponsive({ onNavigate }: AboutPageResponsiveP
         </main>
       </div>
 
-      {/* Copyright footer — full-width black bar, centered text. Sizes
-          confirmed from Figma: 21px desktop, 14px tablet, 10px mobile. */}
-      <footer className="bg-[#0f1012] text-[#f1efed] text-center py-1 min-[600px]:max-[1199px]:py-1.5 min-[1200px]:py-2">
-        <p className="text-[10px] min-[600px]:max-[1199px]:text-sm min-[1200px]:text-[21px] leading-tight">
+      {/* Copyright footer — full-width black bar, centered text.
+          Desktop: fixed 26px height, 16px font (confirmed). */}
+      <footer className="bg-[#0f1012] text-[#f1efed] flex items-center justify-center py-1 min-[600px]:max-[1199px]:py-1.5 min-[1200px]:h-[26px] min-[1200px]:py-0">
+        <p className="text-[10px] min-[600px]:max-[1199px]:text-sm min-[1200px]:text-[16px] leading-tight">
           ©2026 All rights reserved.
         </p>
       </footer>
