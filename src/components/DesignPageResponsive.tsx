@@ -327,11 +327,9 @@ const runFor = (heightPx: number) => heightPx * WEDGE_RATIO;
 const HEADER_WEDGE_H = FIGMA_H;  // grey triangle deliberately spills past the header
 const CONTENT_H = 880;
 
-/* Mobile hero wedge — same 22.929° angle, sized for the compact mobile header.
-   Not present in the Framer inspector captures, so this is a reasonable
-   proportional guess; tweak this one number if the live page needs it
-   bigger/smaller. */
-const MOBILE_WEDGE_H = 140;
+/* Mobile hero wedge — confirmed from Figma: 108 x 256 (108/256 = 0.4219,
+   matches WEDGE_RATIO). The earlier 140 was a guess before this capture. */
+const MOBILE_WEDGE_H = 256;
 
 /* Tablet wedges — confirmed from Figma (iPad Pro 11", 834px frame):
    header wedge SVG measured 204x482 (204/482 = 0.4232, matches WEDGE_RATIO),
@@ -358,21 +356,21 @@ const NOIR_BASELINE = 166.7;  // N bottom = 74 + 92.694
 const NOIR_H = 92.694;     // N height
 const NOIR_GAP = 7.762;    // tuned so NOIR spans exactly 198 -> 375.7 (Figma)
 
-/* Mobile logo scale — confirmed from Figma: Security+NOIR combined bounding
-   box measured 175 x 60.287 on the 390px mobile frame, vs 274.7 x 92.694
-   combined on desktop. That's ~0.637 (width) and ~0.650 (height) — close
-   enough to be one uniform scale, not a stretch/squish. Using 0.64 and
-   deriving every mobile position/size from it, rather than hand-tuning each
-   number, keeps the whole lockup proportional if this ever needs retuning. */
-const MOBILE_LOGO_SCALE = 0.64;
-const MOBILE_SEC_W = SEC_W * MOBILE_LOGO_SCALE;
-const MOBILE_SEC_X = SEC_X * MOBILE_LOGO_SCALE;
-const MOBILE_SEC_Y = SEC_Y * MOBILE_LOGO_SCALE;
-const MOBILE_NOIR_X = NOIR_X * MOBILE_LOGO_SCALE;
-const MOBILE_NOIR_BASELINE = NOIR_BASELINE * MOBILE_LOGO_SCALE;
-const MOBILE_NOIR_H = NOIR_H * MOBILE_LOGO_SCALE;
-const MOBILE_NOIR_GAP = NOIR_GAP * MOBILE_LOGO_SCALE;
-const MOBILE_LOGO_CONTAINER_H = 122; // scaled from desktop's 190px container the same way
+/* Mobile logo — confirmed from Figma (390px frame, Frame 22). Widths/heights
+   still follow a ~0.64 scale of desktop (Security: 61.766/97.062=0.636;
+   N: 59.45/92.694=0.641) — consistent with the earlier combined-bbox
+   estimate. BUT the position is NOT simply desktop's X/Y times 0.64: on
+   mobile, Security and NOIR are deliberately placed with their own gap
+   (34.5px) instead of sitting flush like on desktop. These are the direct
+   measured values, not a formula. */
+const MOBILE_SEC_W = 61.766;
+const MOBILE_SEC_X = 12;
+const MOBILE_SEC_Y = 57;
+const MOBILE_NOIR_X = 108.291;
+const MOBILE_NOIR_TOP = 57;
+const MOBILE_NOIR_H = 59.45;
+const MOBILE_NOIR_GAP = NOIR_GAP * 0.64; // no separate capture for inter-letter gap; scale carries over
+const MOBILE_LOGO_CONTAINER_H = 120; // fits Security+NOIR's real bottom edge (57+59.45=116.45) with a little room
 
 export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiveProps) {
   const [selectedDesign, setSelectedDesign] = useState<DesignVignette | null>(designVignettes[0]);
@@ -455,11 +453,11 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
 
           {/* LEFT: grey wedge holding "Security", NOIR sits on the dark side.
               The wedge's slanted right edge is the divider between the two.
-              Two variants: mobile (scaled ~64%, confirmed from Figma) and
-              tablet+desktop (full Figma pixel size, confirmed unchanged on
-              tablet). Only one is visible at a time. */}
+              Two variants: mobile (direct measured position, ~64% glyph
+              scale) and tablet+desktop (full Figma pixel size, confirmed
+              unchanged on tablet). Only one is visible at a time. */}
           <div
-            className="relative flex-shrink-0 h-[122px] min-[600px]:h-[190px]"
+            className="relative flex-shrink-0 h-[120px] min-[600px]:h-[190px]"
           >
             {/* ---- Mobile logo (below 600px) ---- */}
             <div className="block min-[600px]:hidden">
@@ -483,7 +481,7 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
                 className="absolute flex items-end z-30"
                 style={{
                   left: `${MOBILE_NOIR_X}px`,
-                  top: `${MOBILE_NOIR_BASELINE - MOBILE_NOIR_H}px`,
+                  top: `${MOBILE_NOIR_TOP}px`,
                   gap: `${MOBILE_NOIR_GAP}px`,
                 }}
               >
@@ -554,63 +552,74 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
               <button
                 onClick={() => onNavigate('designs')}
                 style={{ fontFamily: "'Anton', sans-serif" }}
-                className="text-[#f1efed] text-xs min-[600px]:max-[1199px]:text-[20px] min-[1200px]:text-lg hover:opacity-80 transition-opacity"
+                className="text-[#f1efed] text-[16px] min-[600px]:max-[1199px]:text-[20px] min-[1200px]:text-lg hover:opacity-80 transition-opacity"
               >
                 DESIGNS/
               </button>
               <button
                 onClick={() => onNavigate('about')}
                 style={{ fontFamily: "'Anton', sans-serif" }}
-                className="text-[#cfcfcf] text-xs min-[600px]:max-[1199px]:text-[20px] min-[1200px]:text-lg hover:text-[#f1efed] transition-colors"
+                className="text-[#cfcfcf] text-[16px] min-[600px]:max-[1199px]:text-[20px] min-[1200px]:text-lg hover:text-[#f1efed] transition-colors"
               >
                 ABOUT/
               </button>
             </nav>
             {/* Tagline: Inria Serif Regular at every breakpoint (confirmed
-                from Figma) — size/width still scale per breakpoint. */}
+                from Figma). Mobile: 10px / 22px line-height / 305px width —
+                all confirmed (was 14px/130px before, both wrong). */}
             <p
-              className="font-['Inria_Serif'] font-normal text-[#f1efed] text-[10px] min-[600px]:max-[1199px]:text-[13px] min-[1200px]:text-base leading-[14px] min-[600px]:max-[1199px]:leading-[22px] min-[1200px]:leading-[22px] max-w-[130px] min-[600px]:max-[1199px]:max-w-[375px] min-[1200px]:max-w-[375px] text-left"
+              className="font-['Inria_Serif'] font-normal text-[#f1efed] text-[10px] min-[600px]:max-[1199px]:text-[13px] min-[1200px]:text-base leading-[22px] max-w-[305px] min-[600px]:max-[1199px]:max-w-[375px] min-[1200px]:max-w-[375px] text-left"
             >
               A collection of critical designs and short stories that use imaginary but plausible technologies to expose real security and privacy risks through satire, humor, and absurdity.
             </p>
           </div>
         </div>
 
-        {/* Heading + story list area. Right padding now matches the content
-            section's right inset exactly at every breakpoint (was a fixed
-            199px here vs 25%/12px down in the content area — that mismatch
-            is what made the list's right edge drift from the story panel's
-            right edge). Left padding is unchanged. */}
-        <div className="pl-4 pr-4 min-[600px]:max-[1199px]:pl-6 min-[600px]:max-[1199px]:pr-[12px] min-[1200px]:pl-[199px] min-[1200px]:pr-[25%] mt-6">
-          {/* Full-width divider (Line 1) */}
+        {/* Full-width top divider — its OWN symmetric-padding wrapper,
+            matching the About page's divider exactly (position + length).
+            This is deliberately separate from the asymmetric-padded block
+            below: that asymmetric padding is only for right-aligning the
+            vignette grid with the story panel underneath, and was
+            incorrectly also shortening this divider before. */}
+        <div className="px-4 min-[600px]:max-[1199px]:px-6 min-[1200px]:px-[199px] mt-6">
           <div className="border-t border-[#f1efed]" />
+        </div>
 
-          {/* "Critical Design Vignettes" heading — tablet size (32px)
-              confirmed from Figma (matches the About page's "About" heading
-              at the same breakpoint). */}
+        {/* Heading + story list area. Right padding matches the content
+            section's right inset exactly at every breakpoint, so the
+            vignette grid's right edge lines up with the story panel below. */}
+        <div className="pl-4 pr-4 min-[600px]:max-[1199px]:pl-6 min-[600px]:max-[1199px]:pr-[12px] min-[1200px]:pl-[199px] min-[1200px]:pr-[25%]">
+          {/* "Critical Design Vignettes" heading — underline now matches the
+              text width exactly (inline-block + border-bottom) instead of a
+              hardcoded px value, so it's correct at every breakpoint
+              including mobile (was noticeably short there before). */}
           <h1
             style={{ fontFamily: "'Anton', sans-serif" }}
-            className="text-[#f1efed] text-3xl min-[600px]:max-[1199px]:text-[32px] min-[1200px]:text-[38px] leading-tight mt-4"
+            className="inline-block border-b border-[#f1efed] pb-3 text-[#f1efed] text-3xl min-[600px]:max-[1199px]:text-[32px] min-[1200px]:text-[38px] leading-tight mt-4"
           >
             Critical Design Vignettes
           </h1>
 
-          {/* Shorter divider (Line 2) */}
-          <div className="border-t border-[#f1efed] mt-3 w-64 min-[600px]:max-[1199px]:w-80 min-[1200px]:w-[376px]" />
-
           {/* Story list: 5 fixed vertical blocks (one per desktop column),
               wrapped 2-per-row on mobile, 4-per-row on tablet, 5-per-row
-              (all in one row) on desktop. Long titles get progressively
-              tighter letter-spacing instead of wrapping to a second line,
-              so every block stays visually even. */}
+              (all in one row) on desktop. Using CSS Grid (not flex-wrap)
+              here specifically because flexbox's percentage `basis` doesn't
+              subtract the `gap` — 5 items at exactly 20% width plus 4 gaps
+              overflowed 100%, which is why the 5th block was wrapping onto
+              its own row before. Grid's fr-tracks account for gap correctly.
+              min-w-0 on each block is required too: without it, a single
+              whitespace-nowrap title that's too long for its column forces
+              that grid track to expand to fit it, pushing the other
+              column(s) off-screen (hidden by overflow-x-hidden on the page
+              root) — which is what made mobile look like one long column. */}
           <div
-            className="flex flex-wrap mt-6 pb-8 gap-x-4 gap-y-6"
+            className="grid grid-cols-2 min-[600px]:max-[1199px]:grid-cols-4 min-[1200px]:grid-cols-5 mt-6 pb-8 gap-x-4 gap-y-6"
             style={{ fontFamily: "'Inter', sans-serif" }}
           >
             {columnGroups.map((group, groupIndex) => (
               <div
                 key={groupIndex}
-                className="flex flex-col gap-y-1 basis-1/2 min-[600px]:max-[1199px]:basis-1/4 min-[1200px]:basis-1/5"
+                className="flex flex-col gap-y-1 min-w-0"
               >
                 {group.map((design) => {
                   const label = design.menuTitle || design.title;
@@ -623,7 +632,7 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
                     <button
                       key={design.id}
                       onClick={() => setSelectedDesign(design)}
-                      className={`text-left whitespace-nowrap text-xs min-[600px]:max-[1199px]:text-base min-[1200px]:text-base leading-[18px] min-[600px]:max-[1199px]:leading-[24px] min-[1200px]:leading-[22px] ${trackingClass} text-[#f1efed] hover:underline transition-all py-0.5 ${
+                      className={`text-left whitespace-nowrap overflow-visible text-xs min-[600px]:max-[1199px]:text-base min-[1200px]:text-base leading-[18px] min-[600px]:max-[1199px]:leading-[24px] min-[1200px]:leading-[22px] ${trackingClass} text-[#f1efed] hover:underline transition-all py-0.5 ${
                         selectedDesign?.id === design.id ? 'font-bold' : 'font-light'
                       }`}
                     >
@@ -712,15 +721,14 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
               </p>
 
               {/* Illustration — only shows if this vignette has one.
-                  Tablet width (223px) confirmed from Figma for this specific
-                  illustration; if others have a different natural aspect
-                  ratio this may need a per-image tweak later. */}
+                  Sizes are +30% over the previous values, per request, and
+                  moved up slightly (mt-10 -> mt-4). */}
               {selectedDesign.image && (
-                <div className="mt-10 flex justify-end">
+                <div className="mt-4 flex justify-end">
                   <img
                     src={selectedDesign.image}
                     alt={selectedDesign.title}
-                    className="w-[268px] min-[600px]:max-[1199px]:w-[223px] min-[1200px]:w-[456px]"
+                    className="w-[348px] min-[600px]:max-[1199px]:w-[290px] min-[1200px]:w-[593px]"
                     style={{ mixBlendMode: 'multiply' }}
                   />
                 </div>
@@ -730,10 +738,10 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
         </main>
       </div>
 
-      {/* Copyright footer — full-width black bar, centered text. Sizes
-          confirmed from Figma: 21px desktop, 14px tablet, 10px mobile. */}
-      <footer className="bg-[#0f1012] text-[#f1efed] text-center py-1 min-[600px]:max-[1199px]:py-1.5 min-[1200px]:py-2">
-        <p className="text-[10px] min-[600px]:max-[1199px]:text-sm min-[1200px]:text-[21px] leading-tight">
+      {/* Copyright footer — full-width black bar, centered text.
+          Desktop: fixed 26px height, 16px font (confirmed). */}
+      <footer className="bg-[#0f1012] text-[#f1efed] flex items-center justify-center py-1 min-[600px]:max-[1199px]:py-1.5 min-[1200px]:h-[26px] min-[1200px]:py-0">
+        <p className="text-[10px] min-[600px]:max-[1199px]:text-sm min-[1200px]:text-[16px] leading-tight">
           ©2026 All rights reserved.
         </p>
       </footer>
