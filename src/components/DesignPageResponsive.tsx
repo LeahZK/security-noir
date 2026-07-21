@@ -15,9 +15,10 @@ interface DesignVignette {
 
 const designVignettes: DesignVignette[] = [
   {
-    id: 1,
-    title: "ScamBuddy",
-    content: "ScamBuddy is a digital assistant that tests your scam awareness by scamming you. Integrated into your phone, ScamBuddy impersonates your real contacts at random intervals to see how well you spot social engineering. If you respond as if it were real (e.g., giving personal info to \"Mom\"), it informs you of the breach—after posting the exchange to your private \"Security Scoreboard.\" When you express discomfort, ScamBuddy gently reminds you: \"Remember, this is for your own protection; better betrayed by me than by a real scammer.\""
+    id: 6,
+    title: "BackThen™",
+    image: "illustrations/Back%20then.png",
+    content: "People grow. But online, their words don't. BackThen™ is a sincerity-scoring service that evaluates old user-generated content such as tweets, blog posts, and forum rants, assigning a score from 0 to 100 based on how earnestly the author likely meant it at the time. The score accounts for age, tone, platform norms, and whether the sentiment was repeated or retracted. When Alice's teenage forum tirade resurfaces during a job application, the post is flagged with a low sincerity score of 19: \"high irony, age 15, no repeat behavior.\" The recruiter doesn't mention it. Bob isn't so lucky — a college-era blog post denying climate change earns a score of 84, and opponents use it against him during his political campaign. Carol's parents, eager to strengthen her Ivy League applications, hire a sincerity agent to scrub her archive. Earnest blog posts are quietly deleted, while her timeline is repopulated with ironic memes and surrealist jokes. The practice is known as sincerity laundering."
   },
   {
     id: 2,
@@ -43,10 +44,9 @@ const designVignettes: DesignVignette[] = [
     content: "Silent Shift is a digital assistant designed to simplify online tasks for elderly users by gradually customizing their interface—removing options they rarely use, hiding buttons they've clicked by mistake, and automating decisions to help them. Over time, their digital environment becomes quieter, smoother, and narrower. Eventually, they begin to forget how to reach certain features they once used, and their family finds the system strangely unfamiliar."
   },
   {
-    id: 6,
-    title: "BackThen™",
-    image: "illustrations/Back%20then.png",
-    content: "People grow. But online, their words don't. BackThen™ is a sincerity-scoring service that evaluates old user-generated content such as tweets, blog posts, and forum rants, assigning a score from 0 to 100 based on how earnestly the author likely meant it at the time. The score accounts for age, tone, platform norms, and whether the sentiment was repeated or retracted. When Alice's teenage forum tirade resurfaces during a job application, the post is flagged with a low sincerity score of 19: \"high irony, age 15, no repeat behavior.\" The recruiter doesn't mention it. Bob isn't so lucky — a college-era blog post denying climate change earns a score of 84, and opponents use it against him during his political campaign. Carol's parents, eager to strengthen her Ivy League applications, hire a sincerity agent to scrub her archive. Earnest blog posts are quietly deleted, while her timeline is repopulated with ironic memes and surrealist jokes. The practice is known as sincerity laundering."
+    id: 1,
+    title: "ScamBuddy",
+    content: "ScamBuddy is a digital assistant that tests your scam awareness by scamming you. Integrated into your phone, ScamBuddy impersonates your real contacts at random intervals to see how well you spot social engineering. If you respond as if it were real (e.g., giving personal info to \"Mom\"), it informs you of the breach—after posting the exchange to your private \"Security Scoreboard.\" When you express discomfort, ScamBuddy gently reminds you: \"Remember, this is for your own protection; better betrayed by me than by a real scammer.\""
   },
   {
     id: 7,
@@ -392,6 +392,17 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
     setSelectedDesign(designVignettes[columnOrder[nextPos]]);
   };
 
+  // 5 fixed "logical" columns (always 5, matching the desktop layout), each
+  // rendered as one vertical block. Mobile/tablet wrap fewer of these BLOCKS
+  // per row (2 / 4) instead of re-flowing individual titles — this keeps
+  // each block's internal order identical to the desktop columns, matching
+  // the reference mobile mockup (e.g. "BackThen™, ScamBuddy, The Shadow
+  // Avatar..." stays together as one column instead of getting split up by
+  // a naive row-major grid reflow).
+  const columnGroups: DesignVignette[][] = Array.from({ length: COLS }, (_, col) =>
+    designVignettes.filter((_, idx) => idx % COLS === col)
+  );
+
   return (
     <div className="relative w-full overflow-x-hidden bg-[#0f1012]">
 
@@ -555,21 +566,22 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
                 ABOUT/
               </button>
             </nav>
-            {/* Tagline: mobile/desktop use Inter (medium, 500); tablet uses
-                Inria Serif (regular, 400) at 13px/375px — confirmed from
-                Figma with an explicit measured box. Font-family is set via
-                Tailwind's arbitrary font-[] utility (not inline style) so it
-                can actually swap per breakpoint. */}
+            {/* Tagline: Inria Serif Regular at every breakpoint (confirmed
+                from Figma) — size/width still scale per breakpoint. */}
             <p
-              className="italic font-['Inter'] font-medium min-[600px]:max-[1199px]:font-['Inria_Serif'] min-[600px]:max-[1199px]:font-normal min-[1200px]:font-['Inter'] min-[1200px]:font-medium text-[#f1efed] text-[10px] min-[600px]:max-[1199px]:text-[13px] min-[1200px]:text-base leading-[14px] min-[600px]:max-[1199px]:leading-[22px] min-[1200px]:leading-[22px] max-w-[130px] min-[600px]:max-[1199px]:max-w-[375px] min-[1200px]:max-w-[375px] text-left"
+              className="font-['Inria_Serif'] font-normal text-[#f1efed] text-[10px] min-[600px]:max-[1199px]:text-[13px] min-[1200px]:text-base leading-[14px] min-[600px]:max-[1199px]:leading-[22px] min-[1200px]:leading-[22px] max-w-[130px] min-[600px]:max-[1199px]:max-w-[375px] min-[1200px]:max-w-[375px] text-left"
             >
               A collection of critical designs and short stories that use imaginary but plausible technologies to expose real security and privacy risks through satire, humor, and absurdity.
             </p>
           </div>
         </div>
 
-        {/* Heading + story list area */}
-        <div className="px-4 min-[600px]:max-[1199px]:px-6 min-[1200px]:px-[199px] mt-6">
+        {/* Heading + story list area. Right padding now matches the content
+            section's right inset exactly at every breakpoint (was a fixed
+            199px here vs 25%/12px down in the content area — that mismatch
+            is what made the list's right edge drift from the story panel's
+            right edge). Left padding is unchanged. */}
+        <div className="pl-4 pr-4 min-[600px]:max-[1199px]:pl-6 min-[600px]:max-[1199px]:pr-[12px] min-[1200px]:pl-[199px] min-[1200px]:pr-[25%] mt-6">
           {/* Full-width divider (Line 1) */}
           <div className="border-t border-[#f1efed]" />
 
@@ -586,22 +598,40 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
           {/* Shorter divider (Line 2) */}
           <div className="border-t border-[#f1efed] mt-3 w-64 min-[600px]:max-[1199px]:w-80 min-[1200px]:w-[376px]" />
 
-          {/* Story list: 2 columns on mobile, 4 on tablet (confirmed from
-              Figma), 5 on desktop */}
+          {/* Story list: 5 fixed vertical blocks (one per desktop column),
+              wrapped 2-per-row on mobile, 4-per-row on tablet, 5-per-row
+              (all in one row) on desktop. Long titles get progressively
+              tighter letter-spacing instead of wrapping to a second line,
+              so every block stays visually even. */}
           <div
-            className="mt-6 pb-8 grid grid-cols-2 min-[600px]:max-[1199px]:grid-cols-4 min-[1200px]:grid-cols-5 gap-x-4 gap-y-1"
+            className="flex flex-wrap mt-6 pb-8 gap-x-4 gap-y-6"
             style={{ fontFamily: "'Inter', sans-serif" }}
           >
-            {designVignettes.map((design) => (
-              <button
-                key={design.id}
-                onClick={() => setSelectedDesign(design)}
-                className={`text-left text-xs min-[600px]:max-[1199px]:text-base min-[1200px]:text-base leading-[18px] min-[600px]:max-[1199px]:leading-[24px] min-[1200px]:leading-[22px] min-[600px]:max-[1199px]:tracking-[-0.07em] text-[#f1efed] hover:underline transition-all py-0.5 ${
-                  selectedDesign?.id === design.id ? 'font-bold' : 'font-light'
-                }`}
+            {columnGroups.map((group, groupIndex) => (
+              <div
+                key={groupIndex}
+                className="flex flex-col gap-y-1 basis-1/2 min-[600px]:max-[1199px]:basis-1/4 min-[1200px]:basis-1/5"
               >
-                {design.menuTitle || design.title}
-              </button>
+                {group.map((design) => {
+                  const label = design.menuTitle || design.title;
+                  const trackingClass =
+                    label.length > 24 ? 'tracking-[-0.06em]' :
+                    label.length > 18 ? 'tracking-[-0.045em]' :
+                    label.length > 12 ? 'tracking-[-0.025em]' :
+                    '';
+                  return (
+                    <button
+                      key={design.id}
+                      onClick={() => setSelectedDesign(design)}
+                      className={`text-left whitespace-nowrap text-xs min-[600px]:max-[1199px]:text-base min-[1200px]:text-base leading-[18px] min-[600px]:max-[1199px]:leading-[24px] min-[1200px]:leading-[22px] ${trackingClass} text-[#f1efed] hover:underline transition-all py-0.5 ${
+                        selectedDesign?.id === design.id ? 'font-bold' : 'font-light'
+                      }`}
+                    >
+                      {label}
+                    </button>
+                  );
+                })}
+              </div>
             ))}
           </div>
         </div>
@@ -699,6 +729,14 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
           )}
         </main>
       </div>
+
+      {/* Copyright footer — full-width black bar, centered text. Sizes
+          confirmed from Figma: 21px desktop, 14px tablet, 10px mobile. */}
+      <footer className="bg-[#0f1012] text-[#f1efed] text-center py-1 min-[600px]:max-[1199px]:py-1.5 min-[1200px]:py-2">
+        <p className="text-[10px] min-[600px]:max-[1199px]:text-sm min-[1200px]:text-[21px] leading-tight">
+          ©2026 All rights reserved.
+        </p>
+      </footer>
     </div>
   );
 }
