@@ -76,21 +76,23 @@ interface TeamMember {
   bio: string;
 }
 
-/* Display order confirmed by user: Didem, Leah, Jeremy. */
+/* Display order confirmed by user: Didem, Leah, Jeremy.
+   Photo paths match where the files actually live in the repo: public/
+   root (no team/ subfolder), with the exact uploaded filenames. */
 const team: TeamMember[] = [
   {
     name: "Didem Demirag",
-    photo: "team/Didem.jpg",
+    photo: "Didem.jpg",
     bio: "Didem Demirag holds a PhD in Information and Systems Engineering from Concordia University and is currently a lecturer in the Department of Computer Science at UQAM. She is also a graphic designer, passionate about making complex scientific concepts accessible through visual storytelling and creative approaches. She teaches courses in information security and computer science and society, exploring the relationship between technology, ethics, and society. Her research interests focus on data privacy and applied cryptography. She has also conducted research on scientific writing, examining how researchers use the opening sentences of their papers to establish context and engage readers."
   },
   {
     name: "Leah Zhang-Kennedy",
-    photo: "team/leah_300x300.png",
+    photo: "leah_300x300.png",
     bio: "Leah Zhang-Kennedy is an Associate Professor of Interaction Design and User Experience Research, and directs the Safe Interactions Lab at the Stratford School of Interaction Design and Business, University of Waterloo. Zhang-Kennedy's research aims to understand and improve people's digital experiences, knowledge, and technology practices, with particular focuses on computer security, online privacy, and digital literacy. Her research bridges multidisciplinary expertise in human-computer interaction (HCI), user experience design and research (UX), and graphic design."
   },
   {
     name: "Jeremy Clark",
-    photo: "team/media_8105_512.jpg",
+    photo: "media.8105.512.jpg",
     bio: "Jeremy Clark is a professor in Cybersecurity and Intelligent Systems Engineering at Concordia University. He obtained his PhD from the University of Waterloo, where his gold medal dissertation was on designing and deploying secure voting systems including Scantegrity—the first cryptographically verifiable system used in a public sector election. His work continues to examine how emerging technologies shape public institutions, from secure elections to digital currencies, and he has advised municipalities and testified before Canadian parliamentary committees on these issues."
   }
 ];
