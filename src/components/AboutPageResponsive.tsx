@@ -259,10 +259,10 @@ export default function AboutPageResponsive({ onNavigate }: AboutPageResponsiveP
                 ABOUT/
               </button>
             </nav>
-            {/* Tagline: mobile/desktop use Inter (medium); tablet uses
-                Inria Serif (regular) at 13px/375px — confirmed from Figma. */}
+            {/* Tagline: Inria Serif Regular at every breakpoint (confirmed
+                from Figma) — size/width still scale per breakpoint. */}
             <p
-              className="italic font-['Inter'] font-medium min-[600px]:max-[1199px]:font-['Inria_Serif'] min-[600px]:max-[1199px]:font-normal min-[1200px]:font-['Inter'] min-[1200px]:font-medium text-[#f1efed] text-[10px] min-[600px]:max-[1199px]:text-[13px] min-[1200px]:text-base leading-[14px] min-[600px]:max-[1199px]:leading-[22px] min-[1200px]:leading-[22px] max-w-[130px] min-[600px]:max-[1199px]:max-w-[375px] min-[1200px]:max-w-[375px] text-left"
+              className="font-['Inria_Serif'] font-normal text-[#f1efed] text-[10px] min-[600px]:max-[1199px]:text-[13px] min-[1200px]:text-base leading-[14px] min-[600px]:max-[1199px]:leading-[22px] min-[1200px]:leading-[22px] max-w-[130px] min-[600px]:max-[1199px]:max-w-[375px] min-[1200px]:max-w-[375px] text-left"
             >
               A collection of critical designs and short stories that use imaginary but plausible technologies to expose real security and privacy risks through satire, humor, and absurdity.
             </p>
@@ -274,16 +274,14 @@ export default function AboutPageResponsive({ onNavigate }: AboutPageResponsiveP
           {/* Full-width divider (Line 1) */}
           <div className="border-t border-[#f1efed]" />
 
-          {/* "About" heading — 32px tablet size confirmed from Figma */}
+          {/* "About" heading — underline width now matches the text exactly
+              (inline-block + border-bottom) instead of a hardcoded px value. */}
           <h1
             style={{ fontFamily: "'Anton', sans-serif" }}
-            className="text-[#f1efed] text-3xl min-[600px]:max-[1199px]:text-[32px] min-[1200px]:text-[38px] leading-tight mt-4"
+            className="inline-block border-b border-[#f1efed] pb-3 text-[#f1efed] text-3xl min-[600px]:max-[1199px]:text-[32px] min-[1200px]:text-[38px] leading-tight mt-4"
           >
             About
           </h1>
-
-          {/* Shorter divider (Line 2) */}
-          <div className="border-t border-[#f1efed] mt-3 w-64 min-[600px]:max-[1199px]:w-80 min-[1200px]:w-[376px]" />
 
           {/* Intro paragraph — sits on the dark area. Tablet: 648px fixed
               width, 16px/36px line-height, bold spans go extrabold (800) —
@@ -299,7 +297,7 @@ export default function AboutPageResponsive({ onNavigate }: AboutPageResponsiveP
             that expose <span className="font-extrabold">security and privacy risks</span>.
             Each design is presented through{' '}
             <span className="font-extrabold">short narrative vignettes</span> that
-            illustrate how these technologies might be experienced in everyday life.
+            illustrate how technologies might be experienced in everyday life.
           </p>
         </div>
       </header>
@@ -375,6 +373,14 @@ export default function AboutPageResponsive({ onNavigate }: AboutPageResponsiveP
           </div>
         </main>
       </div>
+
+      {/* Copyright footer — full-width black bar, centered text. Sizes
+          confirmed from Figma: 21px desktop, 14px tablet, 10px mobile. */}
+      <footer className="bg-[#0f1012] text-[#f1efed] text-center py-1 min-[600px]:max-[1199px]:py-1.5 min-[1200px]:py-2">
+        <p className="text-[10px] min-[600px]:max-[1199px]:text-sm min-[1200px]:text-[21px] leading-tight">
+          ©2026 All rights reserved.
+        </p>
+      </footer>
     </div>
   );
 }
