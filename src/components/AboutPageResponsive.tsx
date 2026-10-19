@@ -141,15 +141,13 @@ export default function AboutPageResponsive({ onNavigate }: AboutPageResponsiveP
 
       {/* ═══ HEADER (dark background) ═══ */}
       <header className="bg-[#0f1012] text-[#f1efed] relative">
-        {/* <div className="min-[1200px]:max-w-[1364px] min-[1200px]:mx-auto"> */}
-
         {/* Top section: logo (left) + nav + tagline (right).
             Row layout at EVERY breakpoint (mirrors DesignPageResponsive.tsx) —
             fixes the mobile "stacking" bug where nav/tagline used to fall
             below the logo instead of sitting beside it. */}
         {/* ═══ MOBILE header top (below 600px) ═══ */}
         <div className="block min-[600px]:hidden">
-          <div className="flex flex-row items-start justify-between px-4 pt-3">
+          <div className="flex flex-row items-start justify-between pr-4 pt-3">
             <div
               className="relative flex-shrink-0 w-[223px] cursor-pointer"
               style={{ height: `${MOBILE_LOGO_CONTAINER_H}px` }}
@@ -211,7 +209,7 @@ export default function AboutPageResponsive({ onNavigate }: AboutPageResponsiveP
             </nav>
           </div>
 
-          <p className="font-['Inria_Serif'] font-normal text-[#f1efed] text-[10px] leading-[22px] mt-[36px] pl-[21px] pr-[43px]">
+          <p className="font-['Inria_Serif'] font-normal text-[#f1efed] text-[10px] leading-[22px] mt-[36px] pl-[48px] pr-[43px]">
             A collection of critical designs and short stories that use imaginary but plausible technologies to expose real security and privacy risks through satire, humor, and absurdity.
           </p>
         </div>
@@ -220,7 +218,7 @@ export default function AboutPageResponsive({ onNavigate }: AboutPageResponsiveP
         <div className="hidden min-[600px]:flex flex-row items-center justify-between">
 
           <div
-            className="relative flex-shrink-0 w-[377px] h-[190px] cursor-pointer"
+            className="relative flex-shrink-0 w-[377px] h-[190px] cursor-pointer min-[600px]:max-[1199px]:-ml-10"
             onClick={handleLogoClick}
             role="button"
             tabIndex={0}
@@ -288,7 +286,7 @@ export default function AboutPageResponsive({ onNavigate }: AboutPageResponsiveP
         </div>
 
         {/* Heading + intro area — same structure as the design page */}
-        <div className="px-4 min-[600px]:max-[1199px]:px-6 min-[1200px]:px-[199px] mt-[37px] min-[600px]:mt-6">
+        <div className="px-4 min-[600px]:max-[1199px]:pl-[194px] min-[600px]:max-[1199px]:pr-6 min-[1200px]:px-[199px] mt-[37px] min-[600px]:mt-6">
           {/* Full-width divider (Line 1) */}
           <div className="border-t border-[#f1efed]" />
 
@@ -318,7 +316,6 @@ export default function AboutPageResponsive({ onNavigate }: AboutPageResponsiveP
             illustrate how technologies might be experienced in everyday life.
           </p>
         </div>
-        {/* </div> */}
       </header>
 
       {/* ═══ CONTENT SECTION ═══ */}

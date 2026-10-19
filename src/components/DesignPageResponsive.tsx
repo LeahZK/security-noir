@@ -163,7 +163,7 @@ const designVignettes: DesignVignette[] = [
   {
     id: 28,
     title: "You've Always Got Mail",
-    image: "illustrations/YouΓÇÖve%20Always%20Got%20Mail.png",
+    image: "illustrations/Youve%20Always%20Got%20Mail.png",
     content: "People still check their mailboxes, hoping for a sign that someone thought of them. That moment of anticipation rarely delivers anymore. You've Always Got Mail was created to bring that feeling back. When no real mail arrives, the box fabricates an elaborate piece of mail, with content inspired by the user's linked online profile. Alice finds a glossy political campaign flyer, printed on heavy satin stock—then another, from the same candidate, with completely opposite promises. Bob receives a strange handwritten letter, in his own handwriting, from \"his future self,\" imploring him to short Bitcoin before Q3. Carol receives a note from her car, gently suggesting retirement before winter due to joint pain. David is delighted by a voucher for one free year—until he notices it asks for a scanned copy of his ID and concludes a scammer slipped it into his mailbox."
   },
   {
@@ -464,7 +464,7 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
             overlap). Gaps confirmed: 35.71px logo-bottom -> tagline-top,
             ~21/22px tagline side margins, ~30-40px tagline-bottom -> divider. */}
         <div className="block min-[600px]:hidden">
-          <div className="flex flex-row items-start justify-between px-4 pt-3">
+          <div className="flex flex-row items-start justify-between pr-4 pt-3">
             <div
               className="relative flex-shrink-0 cursor-pointer"
               style={{ height: `${MOBILE_LOGO_CONTAINER_H}px` }}
@@ -526,7 +526,7 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
             </nav>
           </div>
 
-          <p className="font-['Inria_Serif'] font-normal text-[#f1efed] text-[10px] leading-[22px] mt-[36px] px-[21px]">
+          <p className="font-['Inria_Serif'] font-normal text-[#f1efed] text-[10px] leading-[22px] mt-[36px] pl-[48px] pr-[21px]">
             A collection of critical designs and short stories that use imaginary but plausible technologies to expose real security and privacy risks through satire, humor, and absurdity.
           </p>
         </div>
@@ -536,7 +536,7 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
         <div className="hidden min-[600px]:flex flex-row items-center justify-between">
 
           <div
-            className="relative flex-shrink-0 h-[190px] cursor-pointer"
+            className="relative flex-shrink-0 h-[190px] cursor-pointer min-[600px]:max-[1199px]:-ml-10"
             onClick={handleLogoClick}
             role="button"
             tabIndex={0}
@@ -611,14 +611,14 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
             below: that asymmetric padding is only for right-aligning the
             vignette grid with the story panel underneath, and was
             incorrectly also shortening this divider before. */}
-        <div className="px-4 min-[600px]:max-[1199px]:px-6 min-[1200px]:px-[199px] mt-6">
+        <div className="px-4 min-[600px]:max-[1199px]:pl-[194px] min-[600px]:max-[1199px]:pr-6 min-[1200px]:px-[199px] mt-6">
           <div className="border-t border-[#f1efed]" />
         </div>
 
         {/* Heading + story list area. Right padding matches the content
             section's right inset exactly at every breakpoint, so the
             vignette grid's right edge lines up with the story panel below. */}
-        <div className="pl-4 pr-4 min-[600px]:max-[1199px]:pl-6 min-[600px]:max-[1199px]:pr-[12px] min-[1200px]:pl-[199px] min-[1200px]:pr-[14.6%]">
+        <div className="pl-4 pr-4 min-[600px]:max-[1199px]:pl-[194px] min-[600px]:max-[1199px]:pr-[12px] min-[1200px]:pl-[199px] min-[1200px]:pr-[14.6%]">
           {/* "Critical Design Vignettes" heading — underline now matches the
               text width exactly (inline-block + border-bottom) instead of a
               hardcoded px value, so it's correct at every breakpoint
@@ -662,7 +662,7 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
                     <button
                       key={design.id}
                       onClick={() => setSelectedDesign(design)}
-                      className={`text-left whitespace-nowrap overflow-visible text-xs min-[600px]:max-[1199px]:text-base min-[1200px]:text-base leading-[18px] min-[600px]:max-[1199px]:leading-[24px] min-[1200px]:leading-[22px] ${trackingClass} text-[#f1efed] hover:underline transition-all py-0.5 ${
+                      className={`text-left whitespace-nowrap overflow-visible text-xs min-[600px]:max-[1199px]:text-sm min-[1200px]:text-base leading-[18px] min-[600px]:max-[1199px]:leading-[22px] min-[1200px]:leading-[22px] ${trackingClass} text-[#f1efed] hover:underline transition-all py-0.5 ${
                         selectedDesign?.id === design.id ? 'font-bold' : 'font-light'
                       }`}
                     >
@@ -751,14 +751,17 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
               </p>
 
               {/* Illustration — only shows if this vignette has one.
-                  Sizes are +30% over the previous values, per request, and
-                  moved up slightly (mt-10 -> mt-4). */}
+                  The PNGs in public/illustrations are trimmed to the drawing
+                  (originals kept in /website illustrations/original), so the
+                  image is sized by max-width/max-height rather than a fixed
+                  width — tall and wide drawings both land at a sensible size
+                  with no empty canvas above them. */}
               {selectedDesign.image && (
                 <div className="mt-4 flex justify-end">
                   <img
                     src={selectedDesign.image}
                     alt={selectedDesign.title}
-                    className="w-[348px] min-[600px]:max-[1199px]:w-[290px] min-[1200px]:w-[593px]"
+                    className="w-auto h-auto max-w-[348px] max-h-[260px] min-[600px]:max-[1199px]:max-w-[290px] min-[600px]:max-[1199px]:max-h-[240px] min-[1200px]:max-w-[593px] min-[1200px]:max-h-[360px]"
                     style={{ mixBlendMode: 'multiply' }}
                   />
                 </div>
