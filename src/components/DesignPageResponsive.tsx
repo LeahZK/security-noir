@@ -736,7 +736,7 @@ export default function DesignPageResponsive({ onNavigate }: DesignPageResponsiv
               tablet has no reserved right-hand dark strip, so content runs
               almost to the edge on the right. */}
           {selectedDesign && (
-            <article className="pl-4 pr-4 min-[600px]:max-[1199px]:pl-[194px] min-[600px]:max-[1199px]:pr-[12px] min-[1200px]:pl-[29%] min-[1200px]:pr-[14.6%] pt-4 pb-16">
+            <article className="pl-4 pr-6 min-[600px]:max-[1199px]:pl-[194px] min-[600px]:max-[1199px]:pr-[32px] min-[1200px]:pl-[29%] min-[1200px]:pr-[calc(14.6%+56px)] pt-4 pb-16">
               <h2
                 style={{ fontFamily: "'Anton', sans-serif" }}
                 className="text-black text-2xl min-[1200px]:text-3xl mb-4"
