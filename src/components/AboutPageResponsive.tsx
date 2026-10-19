@@ -1,168 +1,406 @@
-import svgPaths from "../imports/svg-60veqkonnh";
+import type { KeyboardEvent } from 'react';
+import svgPaths from "../imports/svg-m0bqbyr8st";
 
 interface AboutPageResponsiveProps {
   onNavigate: (page: 'designs' | 'about') => void;
 }
 
+/* ============================================================
+   SHARED DIAGONAL GEOMETRY — taken directly from Figma
+   Figma grey triangle SVG:
+     <path d="M0 576.828V0H244L0 576.828Z" fill="#F1EFED"/>
+   Vertices: (0,0) -> (244,0) -> (0,576.828)
+   A right triangle filling the UPPER-LEFT corner:
+     clip-path: polygon(0 0, 100% 0, 0 100%)
+   Hypotenuse leans 22.929 deg from vertical.
+   Every diagonal derives from WEDGE_RATIO, so all diagonals
+   on the page are parallel by construction.
+   ============================================================ */
+const FIGMA_W = 244;
+const FIGMA_H = 576.828;
+const WEDGE_RATIO = FIGMA_W / FIGMA_H;   // 0.423003 -> 22.929 deg
+
+const runFor = (heightPx: number) => heightPx * WEDGE_RATIO;
+
+const HEADER_WEDGE_H = FIGMA_H;  // grey triangle deliberately spills past the header
+const CONTENT_H = 880;
+
+/* Mobile hero wedge — confirmed from Figma: 108 x 256 (108/256 = 0.4219,
+   matches WEDGE_RATIO). The earlier 140 was a guess before this capture. */
+const MOBILE_WEDGE_H = 256;
+
+/* Tablet wedges — confirmed from Figma (iPad Pro 11", 834px frame):
+   header wedge SVG measured 204x482 (204/482 = 0.4232, matches WEDGE_RATIO),
+   content wedge measured 217x513 (217/513 = 0.4231, also matches). */
+const TABLET_HEADER_WEDGE_H = 482;
+const TABLET_CONTENT_H = 513;
+
+/* "Security" wordmark — exact Figma layer values
+   size 97.062 x 26.513, position x=101 y=74
+   Its right edge lands 3.4px clear of the diagonal. */
+const SEC_W = 97.062;
+const SEC_X = 101;
+const SEC_Y = 74;
+
+/* NOIR — exact Figma values, taken from the "N" layer:
+   N is 45.848 x 92.694 at x=198, y=74.
+   Security ends at x=198.1 and N begins at x=198, so the two
+   wordmarks are flush and the diagonal passes between them.
+   The diagonal at N's top edge is x=212.7, i.e. it deliberately
+   slices ~14.7px across the N's top-left corner. That overlap is
+   part of the design, so NOIR must NOT be pushed clear of it. */
+const NOIR_X = 198;        // N left edge  (Security ends at 198.1 -> flush)
+const NOIR_BASELINE = 166.7;  // N bottom = 74 + 92.694
+const NOIR_H = 92.694;     // N height
+const NOIR_GAP = 7.762;    // tuned so NOIR spans exactly 198 -> 375.7 (Figma)
+
+/* Mobile logo — confirmed from Figma (390px frame, Frame 22). Widths/heights
+   still follow a ~0.64 scale of desktop (Security: 61.766/97.062=0.636;
+   N: 59.45/92.694=0.641) but the position is NOT simply desktop's X/Y times
+   0.64: on mobile, Security and NOIR are placed with their own deliberate
+   gap (34.5px) instead of sitting flush like on desktop. These are direct
+   measured values, not a formula. */
+const MOBILE_SEC_W = 61.766;
+const MOBILE_SEC_X = 12;
+const MOBILE_SEC_Y = 57;
+const MOBILE_NOIR_X = 108.291;
+const MOBILE_NOIR_TOP = 57;
+const MOBILE_NOIR_H = 59.45;
+const MOBILE_NOIR_GAP = NOIR_GAP * 0.64; // no separate capture for inter-letter gap; scale carries over
+const MOBILE_LOGO_CONTAINER_H = 120; // fits Security+NOIR's real bottom edge (57+59.45=116.45) with a little room
+
+interface TeamMember {
+  name: string;
+  photo: string;
+  bio: string;
+}
+
+/* Display order confirmed by user: Didem, Leah, Jeremy.
+   Photo paths match where the files actually live in the repo: public/
+   root (no team/ subfolder), with the exact uploaded filenames. */
+const team: TeamMember[] = [
+  {
+    name: "Didem Demirag",
+    photo: "Didem.jpg",
+    bio: "Didem Demirag holds a PhD in Information and Systems Engineering from Concordia University and is currently a lecturer in the Department of Computer Science at UQAM. She is also a graphic designer, passionate about making complex scientific concepts accessible through visual storytelling and creative approaches. She teaches courses in information security and computer science and society, exploring the relationship between technology, ethics, and society. Her research interests focus on data privacy and applied cryptography. She has also conducted research on scientific writing, examining how researchers use the opening sentences of their papers to establish context and engage readers."
+  },
+  {
+    name: "Leah Zhang-Kennedy",
+    photo: "leah_300x300.png",
+    bio: "Leah Zhang-Kennedy is an Associate Professor of Interaction Design and User Experience Research, and directs the Safe Interactions Lab at the Stratford School of Interaction Design and Business, University of Waterloo. Zhang-Kennedy's research aims to understand and improve people's digital experiences, knowledge, and technology practices, with particular focuses on computer security, online privacy, and digital literacy. Her research bridges multidisciplinary expertise in human-computer interaction (HCI), user experience design and research (UX), and graphic design."
+  },
+  {
+    name: "Jeremy Clark",
+    photo: "media.8105.512.jpg",
+    bio: "Jeremy Clark is a professor in Cybersecurity and Intelligent Systems Engineering at Concordia University. He obtained his PhD from the University of Waterloo, where his gold medal dissertation was on designing and deploying secure voting systems including Scantegrity—the first cryptographically verifiable system used in a public sector election. His work continues to examine how emerging technologies shape public institutions, from secure elections to digital currencies, and he has advised municipalities and testified before Canadian parliamentary committees on these issues."
+  }
+];
+
 export default function AboutPageResponsive({ onNavigate }: AboutPageResponsiveProps) {
+  // Clicking the NOIR logo returns to the Design page.
+  const handleLogoClick = () => onNavigate('designs');
+
   return (
-    <div className="bg-[#f1efed] min-h-screen w-full overflow-x-hidden">
-      {/* Main container with responsive padding */}
-      <div className="relative w-full">
-        {/* Header Section */}
-        <header className="bg-[#0f1012] px-4 sm:px-8 md:px-16 py-6 sm:py-8 relative overflow-hidden">
-          <div className="max-w-7xl mx-auto relative z-10">
-            {/* Navigation with decorative line and triangle */}
-            <div className="flex flex-col items-end mb-8 sm:mb-12">
-              <nav className="flex justify-end gap-4 sm:gap-6">
-                <button
-                  onClick={() => onNavigate('designs')}
-                  className="font-['Anton:Regular',sans-serif] text-[#cfcfcf] text-base sm:text-lg md:text-xl hover:text-[#f1efed] transition-colors"
-                >
-                  DESIGNS/
-                </button>
-                <button
-                  onClick={() => onNavigate('about')}
-                  className="font-['Anton:Regular',sans-serif] text-[#f1efed] text-base sm:text-lg md:text-xl hover:opacity-80 transition-opacity"
-                >
-                  ABOUT/
-                </button>
-              </nav>
-              {/* Decorative horizontal line under nav */}
-              <div className="w-48 sm:w-56 h-0.5 bg-[#f1efed] opacity-10 mt-2" />
-              {/* Decorative triangle facing inward */}
-              <div className="w-0 h-0 border-l-[192px] sm:border-l-[224px] border-l-transparent border-t-[192px] sm:border-t-[224px] border-t-[#f1efed] opacity-5" />
-            </div>
+    <div className="relative w-full overflow-x-hidden bg-[#0f1012]">
 
-            {/* Logo Section - Security Noir. */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-end gap-2 sm:gap-4 mb-8 sm:mb-12">
-              {/* Security text with triangle below */}
-              <div className="flex flex-col items-start">
-                <svg className="w-16 sm:w-20 md:w-24 h-auto" fill="none" preserveAspectRatio="xMinYMin meet" viewBox="0 0 97.0622 26.5134">
-                  <g>
-                    <path d={svgPaths.p1567f280} fill="#F1EFED" />
-                    <path d={svgPaths.p2f943800} fill="#F1EFED" />
-                    <path d={svgPaths.p857c700} fill="#F1EFED" />
-                    <path d={svgPaths.p8cbaa80} fill="#F1EFED" />
-                    <path d={svgPaths.p30bf6cc0} fill="#F1EFED" />
-                    <path d={svgPaths.p14adf900} fill="#F1EFED" />
-                    <path d={svgPaths.p3c5f4500} fill="#F1EFED" />
-                    <path d={svgPaths.p38a85680} fill="#F1EFED" />
-                  </g>
-                </svg>
-                {/* Decorative triangle under Security */}
-                <div className="w-0 h-0 border-l-[28px] sm:border-l-[36px] md:border-l-[42px] border-l-[#f1efed]/20 border-t-[28px] sm:border-t-[36px] md:border-t-[42px] border-t-transparent mt-2" />
-              </div>
+      {/* Grey triangle — exact Figma shape: 244 x 576.828
+            <path d="M0 576.828V0H244L0 576.828Z" fill="#F1EFED"/>
+          Anchored to the PAGE ROOT, not the header, because it is 576.828px
+          tall and must run past the header's 190px without being clipped. */}
+      <div
+        aria-hidden="true"
+        className="hidden min-[1200px]:block absolute top-0 left-0 bg-[#f1efed] z-20 pointer-events-none"
+        style={{
+          width: `${runFor(HEADER_WEDGE_H)}px`,
+          height: `${HEADER_WEDGE_H}px`,
+          clipPath: 'polygon(0 0, 100% 0, 0 100%)',
+        }}
+      />
 
-              {/* Noir large letters with period */}
-              <div className="flex items-end gap-0.5 sm:gap-1">
-                <svg className="h-16 sm:h-20 md:h-24 w-auto" fill="none" preserveAspectRatio="xMinYMin meet" viewBox="0 0 45.8477 92.6943">
+      {/* Tablet grey wedge — 600–1199px, confirmed size from Figma. */}
+      <div
+        aria-hidden="true"
+        className="hidden min-[600px]:max-[1199px]:block absolute top-0 left-0 bg-[#f1efed] z-20 pointer-events-none"
+        style={{
+          width: `${runFor(TABLET_HEADER_WEDGE_H)}px`,
+          height: `${TABLET_HEADER_WEDGE_H}px`,
+          clipPath: 'polygon(0 0, 100% 0, 0 100%)',
+        }}
+      />
+
+      {/* Mobile grey wedge — below 600px, same angle, smallest footprint. */}
+      <div
+        aria-hidden="true"
+        className="block min-[600px]:hidden absolute top-0 left-0 bg-[#f1efed] z-20 pointer-events-none"
+        style={{
+          width: `${runFor(MOBILE_WEDGE_H)}px`,
+          height: `${MOBILE_WEDGE_H}px`,
+          clipPath: 'polygon(0 0, 100% 0, 0 100%)',
+        }}
+      />
+
+      {/* ═══ HEADER (dark background) ═══ */}
+      <header className="bg-[#0f1012] text-[#f1efed] relative">
+        <div className="min-[1200px]:max-w-[1364px] min-[1200px]:mx-auto">
+
+        {/* Top section: logo (left) + nav + tagline (right).
+            Row layout at EVERY breakpoint (mirrors DesignPageResponsive.tsx) —
+            fixes the mobile "stacking" bug where nav/tagline used to fall
+            below the logo instead of sitting beside it. */}
+        {/* ═══ MOBILE header top (below 600px) ═══ */}
+        <div className="block min-[600px]:hidden">
+          <div className="flex flex-row items-start justify-between px-4 pt-3">
+            <div
+              className="relative flex-shrink-0 w-[223px] cursor-pointer"
+              style={{ height: `${MOBILE_LOGO_CONTAINER_H}px` }}
+              onClick={handleLogoClick}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e: KeyboardEvent) => { if (e.key === 'Enter' || e.key === ' ') handleLogoClick(); }}
+              aria-label="Go to Design page"
+            >
+              <svg
+                className="absolute h-auto z-30"
+                style={{ width: `${MOBILE_SEC_W}px`, left: `${MOBILE_SEC_X}px`, top: `${MOBILE_SEC_Y}px` }}
+                fill="none"
+                viewBox="0 0 97.0622 26.5134"
+              >
+                <path d={svgPaths.p1567f280} fill="#0F1012" />
+                <path d={svgPaths.p2f943800} fill="#0F1012" />
+                <path d={svgPaths.p857c700} fill="#0F1012" />
+                <path d={svgPaths.p8cbaa80} fill="#0F1012" />
+                <path d={svgPaths.p30bf6cc0} fill="#0F1012" />
+                <path d={svgPaths.p14adf900} fill="#0F1012" />
+                <path d={svgPaths.p3c5f4500} fill="#0F1012" />
+                <path d={svgPaths.p38a85680} fill="#0F1012" />
+              </svg>
+              <div
+                className="absolute flex items-end z-30"
+                style={{ left: `${MOBILE_NOIR_X}px`, top: `${MOBILE_NOIR_TOP}px`, gap: `${MOBILE_NOIR_GAP}px` }}
+              >
+                <svg className="w-auto" style={{ height: `${MOBILE_NOIR_H}px` }} fill="none" viewBox="0 0 45.8477 92.6943">
                   <path d={svgPaths.p18a72800} fill="#F1EFED" />
                 </svg>
-                <svg className="h-16 sm:h-20 md:h-24 w-auto" fill="none" preserveAspectRatio="xMinYMin meet" viewBox="0 0 46 94">
+                <svg className="w-auto" style={{ height: `${MOBILE_NOIR_H}px` }} fill="none" viewBox="0 0 46 94">
                   <path d={svgPaths.p34a54771} fill="#F1EFED" />
                 </svg>
-                <svg className="h-16 sm:h-20 md:h-24 w-auto" fill="none" preserveAspectRatio="xMinYMin meet" viewBox="0 0 18.0657 93.5167">
+                <svg className="w-auto" style={{ height: `${MOBILE_NOIR_H}px` }} fill="none" viewBox="0 0 18.0657 93.5167">
                   <path d={svgPaths.p8082e80} fill="#F1EFED" />
                 </svg>
-                <svg className="h-16 sm:h-20 md:h-24 w-auto" fill="none" preserveAspectRatio="xMinYMin meet" viewBox="0 0 45.6957 93.5167">
+                <svg className="w-auto" style={{ height: `${MOBILE_NOIR_H}px` }} fill="none" viewBox="0 0 45.6957 93.5167">
                   <path d={svgPaths.p27865e00} fill="#F1EFED" />
                 </svg>
-                <span className="font-['Anton:Regular',sans-serif] text-[#f1efed] text-3xl sm:text-4xl md:text-5xl leading-none self-end translate-y-[0.2em]">.</span>
               </div>
             </div>
 
-            {/* Tagline */}
-            <p className="font-['Inter:Medium_Italic',sans-serif] italic text-[#f1efed] text-sm sm:text-base leading-relaxed max-w-md">
-              A collection of critical designs and short stories that use imaginary but plausible 
-              technologies to expose real security and privacy risks through satire, humor, and absurdity.
-            </p>
+            <nav className="flex gap-3 pt-1">
+              <button
+                onClick={() => onNavigate('designs')}
+                style={{ fontFamily: "'Anton', sans-serif" }}
+                className="text-[#cfcfcf] text-[16px] hover:text-[#f1efed] transition-colors"
+              >
+                DESIGNS/
+              </button>
+              <button
+                onClick={() => onNavigate('about')}
+                style={{ fontFamily: "'Anton', sans-serif" }}
+                className="text-[#f1efed] text-[16px] hover:opacity-80 transition-opacity"
+              >
+                ABOUT/
+              </button>
+            </nav>
+          </div>
 
-            {/* Divider */}
-            <div className="border-t border-[#f1efed] my-6 sm:my-8" />
+          <p className="font-['Inria_Serif'] font-normal text-[#f1efed] text-[10px] leading-[22px] mt-[36px] pl-[21px] pr-[43px]">
+            A collection of critical designs and short stories that use imaginary but plausible technologies to expose real security and privacy risks through satire, humor, and absurdity.
+          </p>
+        </div>
 
-            {/* Title */}
-            <h1 className="font-['Anton:Regular',sans-serif] text-[#f1efed] text-2xl sm:text-3xl md:text-4xl mb-4">
-              About
-            </h1>
+        {/* ═══ TABLET + DESKTOP header top (600px+) ═══ */}
+        <div className="hidden min-[600px]:flex flex-row items-center justify-between">
 
-            {/* Subtitle line */}
-            <div className="border-t border-[#f1efed] w-20 sm:w-24" />
+          <div
+            className="relative flex-shrink-0 w-[377px] h-[190px] cursor-pointer"
+            onClick={handleLogoClick}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e: KeyboardEvent) => { if (e.key === 'Enter' || e.key === ' ') handleLogoClick(); }}
+            aria-label="Go to Design page"
+          >
+            <svg
+              className="absolute h-auto z-30"
+              style={{ width: `${SEC_W}px`, left: `${SEC_X}px`, top: `${SEC_Y}px` }}
+              fill="none"
+              viewBox="0 0 97.0622 26.5134"
+            >
+              <path d={svgPaths.p1567f280} fill="#0F1012" />
+              <path d={svgPaths.p2f943800} fill="#0F1012" />
+              <path d={svgPaths.p857c700} fill="#0F1012" />
+              <path d={svgPaths.p8cbaa80} fill="#0F1012" />
+              <path d={svgPaths.p30bf6cc0} fill="#0F1012" />
+              <path d={svgPaths.p14adf900} fill="#0F1012" />
+              <path d={svgPaths.p3c5f4500} fill="#0F1012" />
+              <path d={svgPaths.p38a85680} fill="#0F1012" />
+            </svg>
 
-            {/* Main about text */}
-            <div className="mt-8 text-[#f1efed] text-base sm:text-lg md:text-xl leading-relaxed max-w-4xl font-['Inter:Regular',sans-serif]">
-              <p>
-                Security Noir draws on the{" "}
-                <span className="font-['Inter:Extra_Bold',sans-serif] font-extrabold">critical design</span>
-                {" "}movement popularized by Dunne and Raby in the 1990s to imagine{" "}
-                <span className="font-['Inter:Extra_Bold',sans-serif] font-extrabold">fictional yet plausible technologies</span>
-                {" "}that expose{" "}
-                <span className="font-['Inter:Extra_Bold',sans-serif] font-extrabold">security and privacy risks</span>
-                . Each design is presented through{" "}
-                <span className="font-['Inter:Bold',sans-serif] font-bold">short narrative vignettes</span>
-                {" "}that illustrate how these technologies might be experienced in everyday life.
-              </p>
+            <div
+              className="absolute flex items-end z-30"
+              style={{ left: `${NOIR_X}px`, top: `${NOIR_BASELINE - NOIR_H}px`, gap: `${NOIR_GAP}px` }}
+            >
+              <svg className="w-auto" style={{ height: `${NOIR_H}px` }} fill="none" viewBox="0 0 45.8477 92.6943">
+                <path d={svgPaths.p18a72800} fill="#F1EFED" />
+              </svg>
+              <svg className="w-auto" style={{ height: `${NOIR_H}px` }} fill="none" viewBox="0 0 46 94">
+                <path d={svgPaths.p34a54771} fill="#F1EFED" />
+              </svg>
+              <svg className="w-auto" style={{ height: `${NOIR_H}px` }} fill="none" viewBox="0 0 18.0657 93.5167">
+                <path d={svgPaths.p8082e80} fill="#F1EFED" />
+              </svg>
+              <svg className="w-auto" style={{ height: `${NOIR_H}px` }} fill="none" viewBox="0 0 45.6957 93.5167">
+                <path d={svgPaths.p27865e00} fill="#F1EFED" />
+              </svg>
             </div>
           </div>
-        </header>
 
-        {/* Content Section */}
-        <main className="bg-[#f1efed] px-4 sm:px-8 md:px-16 py-8 sm:py-12 md:py-16">
-          <div className="max-w-7xl mx-auto space-y-8 sm:space-y-12">
-            {/* Content blocks */}
-            <article className="space-y-4">
-              <h2 className="font-['Anton:Regular',sans-serif] text-xl sm:text-2xl text-black">
-                Lorem Ipsum
-              </h2>
-              
-              <div className="font-['Inria_Serif:Regular',sans-serif] text-base sm:text-lg leading-7 text-black">
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor 
-                  incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
-                  exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute 
-                  irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
-                  pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia 
-                  deserunt mollit anim id est laborum.
-                </p>
-              </div>
-            </article>
+          <div className="flex flex-col items-end min-[600px]:max-[1199px]:px-6 min-[1200px]:px-0 min-[600px]:max-[1199px]:pt-4 min-[1200px]:pt-5 min-[1200px]:pr-[150px] min-[600px]:max-[1199px]:gap-3 min-[1200px]:gap-4">
+            <nav className="flex min-[600px]:max-[1199px]:gap-4 min-[1200px]:gap-6">
+              <button
+                onClick={() => onNavigate('designs')}
+                style={{ fontFamily: "'Anton', sans-serif" }}
+                className="text-[#cfcfcf] min-[600px]:max-[1199px]:text-[20px] min-[1200px]:text-lg hover:text-[#f1efed] transition-colors"
+              >
+                DESIGNS/
+              </button>
+              <button
+                onClick={() => onNavigate('about')}
+                style={{ fontFamily: "'Anton', sans-serif" }}
+                className="text-[#f1efed] min-[600px]:max-[1199px]:text-[20px] min-[1200px]:text-lg hover:opacity-80 transition-opacity"
+              >
+                ABOUT/
+              </button>
+            </nav>
+            <p
+              className="font-['Inria_Serif'] font-normal min-[1200px]:font-['Inter'] min-[1200px]:font-medium text-[#f1efed] min-[600px]:max-[1199px]:text-[13px] min-[1200px]:text-base min-[600px]:max-[1199px]:leading-[22px] min-[1200px]:leading-[22px] min-[600px]:max-[1199px]:max-w-[375px] min-[1200px]:max-w-[375px] text-left"
+            >
+              A collection of critical designs and short stories that use imaginary but plausible technologies to expose real security and privacy risks through satire, humor, and absurdity.
+            </p>
+          </div>
+        </div>
 
-            <article className="space-y-4">
-              <h2 className="font-['Anton:Regular',sans-serif] text-xl sm:text-2xl text-black">
-                Lorem Ipsum
-              </h2>
-              
-              <div className="font-['Inria_Serif:Regular',sans-serif] text-base sm:text-lg leading-7 text-black">
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor 
-                  incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
-                  exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute 
-                  irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
-                  pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia 
-                  deserunt mollit anim id est laborum.
-                </p>
-              </div>
-            </article>
+        {/* Heading + intro area — same structure as the design page */}
+        <div className="px-4 min-[600px]:max-[1199px]:px-6 min-[1200px]:px-[199px] mt-[37px] min-[600px]:mt-6">
+          {/* Full-width divider (Line 1) */}
+          <div className="border-t border-[#f1efed]" />
 
-            <article className="space-y-4">
-              <h2 className="font-['Anton:Regular',sans-serif] text-xl sm:text-2xl text-black">
-                Lorem Ipsum
-              </h2>
-              
-              <div className="font-['Inria_Serif:Regular',sans-serif] text-base sm:text-lg leading-7 text-black">
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor 
-                  incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
-                  exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute 
-                  irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
-                  pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia 
-                  deserunt mollit anim id est laborum.
-                </p>
-              </div>
-            </article>
+          {/* "About" heading — underline width now matches the text exactly
+              (inline-block + border-bottom) instead of a hardcoded px value. */}
+          <h1
+            style={{ fontFamily: "'Anton', sans-serif" }}
+            className="inline-block border-b border-[#f1efed] pb-3 text-[#f1efed] text-3xl min-[600px]:max-[1199px]:text-[32px] min-[1200px]:text-[38px] leading-tight mt-[20px] min-[600px]:mt-4"
+          >
+            About
+          </h1>
+
+          {/* Intro paragraph — sits on the dark area. Tablet: 648px fixed
+              width, 16px/36px line-height, bold spans go extrabold (800) —
+              all confirmed from Figma. */}
+          <p
+            style={{ fontFamily: "'Inter', sans-serif" }}
+            className="mt-6 pb-10 text-[#f1efed] text-[12px] min-[600px]:max-[1199px]:text-base min-[1200px]:text-base leading-[22px] min-[600px]:max-[1199px]:leading-[36px] min-[1200px]:leading-[22px] font-light max-w-[820px] min-[600px]:max-[1199px]:max-w-[648px]"
+          >
+            Security Noir draws on the{' '}
+            <span className="font-extrabold">critical design</span> movement popularized
+            by Dunne and Raby in the 1990s to imagine{' '}
+            <span className="font-extrabold">fictional yet plausible technologies</span>{' '}
+            that expose <span className="font-extrabold">security and privacy risks</span>.
+            Each design is presented through{' '}
+            <span className="font-extrabold">short narrative vignettes</span> that
+            illustrate how technologies might be experienced in everyday life.
+          </p>
+        </div>
+        </div>
+      </header>
+
+      {/* ═══ CONTENT SECTION ═══ */}
+      {/* Identical structure to the design page: ivory base, dark right strip,
+          dark wedge at the shared WEDGE_RATIO angle. */}
+      <div className="relative bg-[#f1efed] min-h-screen flex flex-col overflow-hidden">
+
+        {/* Dark right margin strip — desktop only */}
+        <div className="hidden min-[1200px]:block absolute right-0 top-0 bottom-0 w-[14.6%] bg-[#0f1012]" />
+
+        {/* Dark wedge — desktop */}
+        <div
+          className="hidden min-[1200px]:block absolute left-0 top-0 bg-[#0f1012] pointer-events-none"
+          style={{
+            width: `${runFor(CONTENT_H)}px`,
+            height: `${CONTENT_H}px`,
+            clipPath: 'polygon(0 0, 100% 0, 0 100%)',
+          }}
+        />
+        {/* Dark wedge — tablet, confirmed from Figma */}
+        <div
+          className="hidden min-[600px]:max-[1199px]:block absolute left-0 top-0 bg-[#0f1012] pointer-events-none"
+          style={{
+            width: `${runFor(TABLET_CONTENT_H)}px`,
+            height: `${TABLET_CONTENT_H}px`,
+            clipPath: 'polygon(0 0, 100% 0, 0 100%)',
+          }}
+        />
+
+        <main className="relative flex-1 min-[1200px]:max-w-[1364px] min-[1200px]:mx-auto">
+          {/* Tablet insets (pl 194px / pr 12px) confirmed from Figma —
+              asymmetric since tablet has no reserved right strip. */}
+          <div className="pl-4 pr-4 min-[600px]:max-[1199px]:pl-[194px] min-[600px]:max-[1199px]:pr-[12px] min-[1200px]:pl-[29%] min-[1200px]:pr-[25%] pt-10 min-[600px]:max-[1199px]:pt-12 min-[1200px]:pt-16 pb-16">
+            <h2
+              style={{ fontFamily: "'Anton', sans-serif" }}
+              className="text-black text-2xl min-[1200px]:text-3xl mb-6"
+            >
+              Bio
+            </h2>
+
+            {/* One card per team member: circular photo + name + bio text.
+                Photo: 110px mobile, 140px tablet, 164px desktop — all
+                confirmed directly from Figma (the earlier 80px guess, back-
+                calculated from a text-box position, was wrong). Text width
+                on desktop is explicitly 628px (confirmed), which is why
+                photo has to shrink — otherwise there isn't room for it. */}
+            <div className="flex flex-col gap-8 min-[600px]:gap-10">
+              {team.map((member) => (
+                <div key={member.name} className="flex flex-row items-start gap-4 min-[600px]:gap-6">
+                  <img
+                    src={member.photo}
+                    alt={member.name}
+                    className="w-[110px] h-[110px] min-[600px]:max-[1199px]:w-[140px] min-[600px]:max-[1199px]:h-[140px] min-[1200px]:w-[164px] min-[1200px]:h-[164px] rounded-full object-cover flex-shrink-0"
+                  />
+                  <div className="min-[1200px]:w-[628px]">
+                    <h3
+                      style={{ fontFamily: "'Anton', sans-serif" }}
+                      className="text-black text-lg min-[600px]:max-[1199px]:text-[22px] min-[1200px]:text-2xl mb-2"
+                    >
+                      {member.name}
+                    </h3>
+                    <p
+                      style={{ fontFamily: "'Inria Serif', serif" }}
+                      className="text-black text-sm min-[600px]:max-[1199px]:text-base min-[1200px]:text-lg leading-[22px] min-[600px]:max-[1199px]:leading-[24px] min-[1200px]:leading-[25px]"
+                    >
+                      {member.bio}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </main>
       </div>
+
+      {/* Copyright footer — full-width black bar, centered text.
+          Desktop: fixed 26px height, 16px font (confirmed). */}
+      <footer className="bg-[#0f1012] text-[#f1efed] flex items-center justify-center py-1 min-[600px]:max-[1199px]:py-1.5 min-[1200px]:h-[26px] min-[1200px]:py-0">
+        <p className="text-[10px] min-[600px]:max-[1199px]:text-sm min-[1200px]:text-[16px] leading-tight">
+          ©2026 All rights reserved.
+        </p>
+      </footer>
     </div>
   );
 }
