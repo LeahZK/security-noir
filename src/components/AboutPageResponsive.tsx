@@ -141,7 +141,7 @@ export default function AboutPageResponsive({ onNavigate }: AboutPageResponsiveP
 
       {/* ═══ HEADER (dark background) ═══ */}
       <header className="bg-[#0f1012] text-[#f1efed] relative">
-        <div className="min-[1200px]:max-w-[1364px] min-[1200px]:mx-auto">
+        {/* <div className="min-[1200px]:max-w-[1364px] min-[1200px]:mx-auto"> */}
 
         {/* Top section: logo (left) + nav + tagline (right).
             Row layout at EVERY breakpoint (mirrors DesignPageResponsive.tsx) —
@@ -318,7 +318,7 @@ export default function AboutPageResponsive({ onNavigate }: AboutPageResponsiveP
             illustrate how technologies might be experienced in everyday life.
           </p>
         </div>
-        </div>
+        {/* </div> */}
       </header>
 
       {/* ═══ CONTENT SECTION ═══ */}
@@ -348,7 +348,7 @@ export default function AboutPageResponsive({ onNavigate }: AboutPageResponsiveP
           }}
         />
 
-        <main className="relative flex-1 min-[1200px]:max-w-[1364px] min-[1200px]:mx-auto">
+        <main className="relative flex-1">
           {/* Tablet insets (pl 194px / pr 12px) confirmed from Figma —
               asymmetric since tablet has no reserved right strip. */}
           <div className="pl-4 pr-4 min-[600px]:max-[1199px]:pl-[194px] min-[600px]:max-[1199px]:pr-[12px] min-[1200px]:pl-[29%] min-[1200px]:pr-[25%] pt-10 min-[600px]:max-[1199px]:pt-12 min-[1200px]:pt-16 pb-16">
